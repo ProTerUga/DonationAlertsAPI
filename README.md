@@ -2,7 +2,7 @@
 
 [![Paper](https://img.shields.io/badge/Paper-1.21.1-purple?style=flat&logo=bukkit)](https://papermc.io/)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://adoptium.net/)
-[![GitHub license](https://img.shields.io/github/license/ProTerUg/DonationAlertsAPI)](https://github.com/ProTerUg/DonationAlertsAPI/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/ProTerUga/DonationAlertsAPI)](https://github.com/ProTerUga/DonationAlertsAPI/blob/main/LICENSE)
 [![Modrinth](https://img.shields.io/badge/Modrinth-Download-green?style=flat&logo=modrinth)](https://modrinth.com/plugin/donationalertsapi) <!-- Замените ссылку после публикации -->
 
 **DonationAlertsAPI** is a modern, high-performance Minecraft plugin that allows you to receive real-time donation alerts directly from the [DonationAlerts](https://www.donationalerts.com/) platform in your game.
@@ -24,7 +24,7 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 ## 📥 Installation
 
-1. Download the latest JAR file from the [Releases](https://github.com/ProTerUg/DonationAlertsAPI/releases) page or from [Modrinth](https://modrinth.com/plugin/donationalertsapi).
+1. Download the latest JAR file from the [Releases](https://github.com/ProTerUga/DonationAlertsAPI/releases) page or from [Modrinth](https://modrinth.com/plugin/donationalertsapi).
 2. Place the `DonationAlertsAPI-*.jar` file into the `plugins` folder of your Paper server.
 3. Start (or restart) the server to generate the default configuration.
 4. Edit the `plugins/DonationAlertsAPI/config.yml` with your DonationAlerts account details (see Configuration below).
