@@ -20,6 +20,8 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 - **Paper-compatible** - Designed for Paper 1.21.1+
 - **MiniMessage** - Native support for MiniMessage is built into the plugin.
 
+![Built-in commands](assets/banner.png)
+
 ---
 
 ## 📥 Installation
