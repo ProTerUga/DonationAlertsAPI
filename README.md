@@ -115,12 +115,12 @@ dependencies {
 ```java
 @EventHandler
 public void onDonation(DonationEvent event) {
-    String donor = event.getDonorName();
+    String sender = event.getUsername();
     double amount = event.getAmount();
     String currency = event.getCurrency();
     String message = event.getMessage();
 
-    Bukkit.broadcastMessage("§a" + donor + " donated " + amount + " " + currency + "!");
+    Bukkit.broadcastMessage("§a" + sender + " donated " + amount + " " + currency + "!");
 }
 ```
 > Note: You need to depend on DonationAlertsAPI in your plugin.yml:
