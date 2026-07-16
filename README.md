@@ -71,7 +71,7 @@ messages:
 
 ## 📦 Maven Dependency (for Developers)
 
-If you want to use `DonationAlertsAPI` as a dependency in your own plugin, you can include it via **JitPack** — a build service for GitHub repositories.
+If you want to use `DonationAlertsAPI` as a dependency in your own plugin, you can include it via **JitPack** - a build service for GitHub repositories.
 
 ### 1. Add the JitPack repository
 
