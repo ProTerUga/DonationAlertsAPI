@@ -44,7 +44,7 @@ public class DonationAlertsApiCMND {
                                                 })
                                                 .then(Commands.argument("message", StringArgumentType.greedyString())
                                                         .suggests((ctx, b) -> {
-                                                            b.suggest("Сообщение...");
+                                                            b.suggest("Message...");
                                                             return b.buildFuture();
                                                         })
                                                         .requires(ctx -> ctx.getSender().hasPermission("daapi.test"))
