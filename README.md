@@ -99,7 +99,7 @@ Replace `VERSION` with the latest release tag (e.g., `1.0.0`) or a specific comm
 **Maven** (`pom.xml`):
 ```xml
 <dependency>
-    <groupId>com.github.ProTerUg</groupId>
+    <groupId>io.github.ProTerUga</groupId>
     <artifactId>DonationAlertsAPI</artifactId>
     <version>VERSION</version>
     <scope>provided</scope>
@@ -108,7 +108,7 @@ Replace `VERSION` with the latest release tag (e.g., `1.0.0`) or a specific comm
 **Gradle** (`build.gradle`):
 ```gradle
 dependencies {
-    compileOnly 'com.github.ProTerUg:DonationAlertsAPI:VERSION'
+    compileOnly 'io.github.ProTerUga:DonationAlertsAPI:VERSION'
 }
 ```
 
