@@ -11,16 +11,6 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 ---
 
-## 📜 Table of Contents
-
-- [Features](#-features)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Maven Dependency (for Developers)](#-dependencies)
-- [Dependencies]()
-
----
-
 ## ✨ Features
 
 - **Real-time** - Receives donation alerts instantly via DonationAlerts WebSocket.
