@@ -20,6 +20,8 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 - **Paper-compatible** - Designed for Paper 1.21.1+
 - **MiniMessage** - Native support for MiniMessage is built into the plugin.
 
+![Built-in commands](assets/banner.png)
+
 ---
 
 ## 📥 Installation
@@ -97,7 +99,7 @@ Replace `VERSION` with the latest release tag (e.g., `1.0.0`) or a specific comm
 **Maven** (`pom.xml`):
 ```xml
 <dependency>
-    <groupId>com.github.ProTerUg</groupId>
+    <groupId>com.github.ProTerUga</groupId>
     <artifactId>DonationAlertsAPI</artifactId>
     <version>VERSION</version>
     <scope>provided</scope>
@@ -106,7 +108,7 @@ Replace `VERSION` with the latest release tag (e.g., `1.0.0`) or a specific comm
 **Gradle** (`build.gradle`):
 ```gradle
 dependencies {
-    compileOnly 'com.github.ProTerUg:DonationAlertsAPI:VERSION'
+    compileOnly 'com.github.ProTerUga:DonationAlertsAPI:VERSION'
 }
 ```
 
