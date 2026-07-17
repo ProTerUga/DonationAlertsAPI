@@ -15,9 +15,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -32,12 +34,15 @@ public class DonationAlertsApi extends JavaPlugin {
     private final static String PATTERN_NEWLINE = Pattern.quote("\n");
 
     private String accessToken;
+    private String clientId;
+    private String clientSecret;
+    private String redirectUri;
     private int reconnectDelay;
     private boolean logInfo;
     private boolean logDonations;
     private boolean logWebSocket;
     private boolean builtInCommands;
-    private final List<String> commands = new ArrayList<>();
+    private List<String> commands;
     private Map<String, Component> messages;
 
     private String socketToken;
@@ -50,12 +55,13 @@ public class DonationAlertsApi extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        commands = new ArrayList<>();
         saveDefaultConfig();
         readConfig();
 
         Bukkit.getPluginManager().registerEvents(new DonationListener(this, commands), this);
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
-                commands.registrar().register(DonationAlertsApiCMND.command(this))
+                commands.registrar().register(DonationAlertsApiCMND.command(this), List.of("donationalertsapi", "donationapi", "donationalerts"))
         );
 
         tryConnect();
@@ -78,6 +84,9 @@ public class DonationAlertsApi extends JavaPlugin {
         }
 
         accessToken = getConfig().getString("access-token", "");
+        clientId = getConfig().getString("client-id", "");
+        clientSecret = getConfig().getString("client-secret", "");
+        redirectUri = getConfig().getString("redirect-uri", "http://localhost:8080/callback");
 
         reconnectDelay = getConfig().getInt("reconnect-delay", 10);
         logDonations = getConfig().getBoolean("log-donations", true);
@@ -358,6 +367,72 @@ public class DonationAlertsApi extends JavaPlugin {
                 fetchUserDataAndConnect();
             }
         }, reconnectDelay, TimeUnit.SECONDS);
+    }
+
+
+    public String generateAuthUrl() {
+        if (clientId.isBlank()) {
+            return null;
+        }
+        return "https://www.donationalerts.com/oauth/authorize?response_type=code&client_id=" + clientId
+                + "&redirect_uri=" + redirectUri
+                + "&scope=oauth-user-show%20oauth-donation-subscribe";
+    }
+
+    private String encodeParams(Map<String, String> params) {
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (!result.isEmpty()) result.append("&");
+            result.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8))
+                    .append("=")
+                    .append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8));
+        }
+        return result.toString();
+    }
+
+    public boolean exchangeCodeForToken(String code) {
+        if (clientId.isBlank() || clientSecret.isBlank()) {
+            getLogger().severe(CONSOLE_PREFIX + "Client ID or Client Secret is not set in config.yml.");
+            return false;
+        }
+
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("grant_type", "authorization_code");
+            params.put("client_id", clientId);
+            params.put("client_secret", clientSecret);
+            params.put("code", code);
+            params.put("redirect_uri", redirectUri);
+
+            String formData = encodeParams(params);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://www.donationalerts.com/oauth/token"))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.ofString(formData))
+                    .timeout(Duration.ofSeconds(10))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                getLogger().severe(CONSOLE_PREFIX + "Token exchange error (response " + response.statusCode() + "): " + response.body());
+                return false;
+            }
+
+            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+            String newToken = json.get("access_token").getAsString();
+            getConfig().set("access-token", newToken);
+            saveConfig();
+            reloadConfig();
+            accessToken = newToken;
+
+            getLogger().info(CONSOLE_PREFIX + "Access token successfully updated! Reconnecting...");
+            tryConnect();
+            return true;
+
+        } catch (Exception e) {
+            getLogger().severe(CONSOLE_PREFIX + "Failed to exchange code: " + e.getMessage());
+            return false;
+        }
     }
 
     public boolean isConnected() {

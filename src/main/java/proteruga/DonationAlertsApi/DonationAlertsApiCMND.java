@@ -7,10 +7,13 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
+@SuppressWarnings(value = "all")
 public class DonationAlertsApiCMND {
     private static DonationAlertsApi plugin;
     public static LiteralCommandNode<CommandSourceStack> command(DonationAlertsApi plugin) {
@@ -22,6 +25,14 @@ public class DonationAlertsApiCMND {
                 .then(Commands.literal("status")
                         .requires(ctx -> ctx.getSender().hasPermission("daapi.status"))
                         .executes(DonationAlertsApiCMND::status))
+                .then(Commands.literal("auth")
+                        .requires(ctx -> ctx.getSender().hasPermission("daapi.auth"))
+                        .executes(DonationAlertsApiCMND::auth))
+                .then(Commands.literal("token")
+                        .requires(ctx -> ctx.getSender().hasPermission("daapi.token"))
+                        .then(Commands.argument("code", StringArgumentType.string())
+                                .requires(ctx -> ctx.getSender().hasPermission("daapi.token"))
+                                .executes(DonationAlertsApiCMND::token)))
                 .then(Commands.literal("test")
                         .requires(ctx -> ctx.getSender().hasPermission("daapi.test"))
                         .then(Commands.argument("username", StringArgumentType.string())
@@ -101,6 +112,45 @@ public class DonationAlertsApiCMND {
                 )
         );
 
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int auth(CommandContext<CommandSourceStack> ctx) {
+        String url = plugin.generateAuthUrl();
+
+        if (url == null) {
+            ctx.getSource().getSender().sendMessage(plugin.getMessage("auth.missing-client-id"));
+            return Command.SINGLE_SUCCESS;
+        }
+
+        ctx.getSource().getSender().sendMessage(
+                MiniMessage.miniMessage().deserialize(
+                        MiniMessage.miniMessage().serialize(
+                                plugin.getMessage("auth.url-message")
+                        ).replaceAll(Pattern.quote("$url$"), url)
+                )
+        );
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int token(CommandContext<CommandSourceStack> ctx) {
+        String code = ctx.getArgument("code", String.class);
+        if (code.isBlank()) {
+            ctx.getSource().getSender().sendMessage(plugin.getMessage("token.empty-code"));
+            return Command.SINGLE_SUCCESS;
+        }
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            boolean success = plugin.exchangeCodeForToken(code);
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                if (success) {
+                    ctx.getSource().getSender().sendMessage(plugin.getMessage("token.successfully-obtained"));
+                } else {
+                    ctx.getSource().getSender().sendMessage(plugin.getMessage("token.failed"));
+                }
+            });
+        });
         return Command.SINGLE_SUCCESS;
     }
 }

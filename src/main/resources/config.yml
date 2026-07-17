@@ -5,8 +5,23 @@
 # Your DonationAlerts OAuth2 access token.
 # Obtain it via the authorization code flow:
 # https://www.donationalerts.com/apidoc#authorization__authorization_code
-# Required. the plugin will disable itself if this is empty or invalid.
+#
+# REQUIRED. The plugin won't work without it.
+# Step-by-step guide you can find here:
+#
 access-token: ""
+
+
+# These parameters are needed to easily obtain an access token.
+# If you already have one and/or you know what to do,
+# you don't have to fill in these fields.
+
+# Your OAuth2 application's App ID.
+client-id: ""
+# Your OAuth2 application's API Key (Client Secret). Keep this private!
+client-secret: ""
+# The redirect URL configured in your DonationAlerts application.
+redirect-uri: http://localhost:8080/callback
 
 # Delay (in seconds) before attempting to reconnect to the Centrifugo WebSocket
 # after a disconnection or failure. The plugin will retry indefinitely.
@@ -65,6 +80,16 @@ messages:
   test:
     connection-warning: "<yellow>Warning! DonationAlerts is NOT connected!"
     donation: "<green>The donation was successfully triggered."
+  auth:
+    missing-client-id: "<red> Client ID is not set in config.yml. Please set it and reload."
+    url-message: '<aqua>Open this URL in your browser and copy an authorization code
+          from the search bar (...?code=<code>): <underlined><white><click:open_url:''$url$''><hover:show_text:''Click''>$url$<reset><br>
+          <aqua>After that, run at console /daapi token <code>'
+  token:
+    empty-code: "<red>Code cannot be empty."
+    successfully-obtained: "<green>Access token successfully obtained and saved! The plugin will reconnect."
+    failed: "<red>Failed to exchange code. Check console for details."
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # MiniMessage Quick Reference
