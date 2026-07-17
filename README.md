@@ -143,6 +143,8 @@ messages:
 #
 # Full documentation: https://docs.papermc.io/adventure/minimessage/format/
 # ──────────────────────────────────────────────────────────────────────────────
+
+debug: false
 ```
 ---
 
