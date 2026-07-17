@@ -24,6 +24,7 @@ public class DonationListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onDonation(DonationEvent e) {
+        if (plugin.isDebug()) plugin.getLogger().info(DonationAlertsApi.CONSOLE_PREFIX + e.toString());
         if (plugin.allowBuiltInCommands()) {
             for (String command : commands) {
                 command = command

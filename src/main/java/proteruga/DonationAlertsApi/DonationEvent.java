@@ -156,9 +156,24 @@ public class DonationEvent extends Event {
     public record RecipientInfo(long userId, String code, String name, String avatar) {
     }
 
-    public static DonationEvent test(String username, String message, double amount, String currency) {
-        return new DonationEvent(
-                -1, null, username, message, null, null, amount, currency,
-                -1, -1, null, null, null, null, null);
+    @Override
+    public String toString() {
+        return "DonationEvent{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", message='" + message + '\'' +
+                ", messageType='" + messageType + '\'' +
+                ", payinSystem='" + payinSystem + '\'' +
+                ", amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", isShown=" + isShown +
+                ", amountInUserCurrency=" + amountInUserCurrency +
+                ", recipientName='" + recipientName + '\'' +
+                ", recipient=" + recipient +
+                ", createdAt='" + createdAt + '\'' +
+                ", shownAt='" + shownAt + '\'' +
+                ", reason='" + reason + '\'' +
+                '}';
     }
 }

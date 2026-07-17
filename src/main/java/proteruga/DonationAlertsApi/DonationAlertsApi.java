@@ -44,6 +44,7 @@ public class DonationAlertsApi extends JavaPlugin {
     private boolean builtInCommands;
     private List<String> commands;
     private Map<String, Component> messages;
+    private boolean debug;
 
     private String socketToken;
     private long userId;
@@ -116,6 +117,8 @@ public class DonationAlertsApi extends JavaPlugin {
                 messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key)));
             }
         }
+
+        debug = getConfig().getBoolean("debug", false);
     }
 
     public boolean tryConnect() {
@@ -444,5 +447,9 @@ public class DonationAlertsApi extends JavaPlugin {
 
     public boolean allowBuiltInCommands() {
         return builtInCommands;
+    }
+
+    public boolean isDebug() {
+        return debug;
     }
 }
