@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 public class DonationAlertsApi extends JavaPlugin {
 
-    private final static String CONSOLE_PREFIX = "[DonationAlertsAPI] ";
+    public final static String CONSOLE_PREFIX = "[DonationAlertsAPI] ";
     private final static String PATTERN_NEWLINE = Pattern.quote("\n");
 
     private String accessToken;
