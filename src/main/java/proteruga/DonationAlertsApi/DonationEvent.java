@@ -124,7 +124,7 @@ public class DonationEvent extends Event {
     public RecipientInfo getRecipient() { return recipient; }
 
     /** Returns the date and time of donation creation
-     * @return the date and time of donation creation in format<br>{@code yyyy-MM-dd HH:mm:ss}. See {@link java.time.format.DateTimeFormatter} for more information*/
+     * @return the date and time of donation creation in format<br>{@code yyyy-MM-dd HH:mm:ss}. You can use {@link DonationEvent#dateTimeFormatter}. See {@link java.time.format.DateTimeFormatter} for more information*/
     public String getCreatedAt() { return createdAt; }
 
     /** Returns the date and time when the donation was shown on the screen.
