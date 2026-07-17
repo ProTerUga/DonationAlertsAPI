@@ -112,7 +112,6 @@ public class DonationAlertsApi extends JavaPlugin {
             else messages = new HashMap<>();
 
             for (String key : messagesSection.getKeys(true)) {
-//                getLogger().info(CONSOLE_PREFIX + "Handling: " + key);
                 if (key.equals("prefix")) continue;
                 messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key)));
             }
