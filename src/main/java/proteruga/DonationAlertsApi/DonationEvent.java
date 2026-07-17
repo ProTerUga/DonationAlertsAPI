@@ -4,6 +4,8 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jspecify.annotations.NonNull;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * An event that is triggered when a new donation is received from the user.
  * <p>
@@ -13,6 +15,8 @@ import org.jspecify.annotations.NonNull;
  * @author ProTerUga
  * @since 1.0.0*/
 public class DonationEvent extends Event {
+
+    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final HandlerList handlers = new HandlerList();
 
     private final long id;
@@ -131,6 +135,10 @@ public class DonationEvent extends Event {
      * @return the reason for the rejection or the donation status (e.g. {@code default})*/
     public String getReason() { return reason; }
 
+    /** Returns the sender's nickname.
+     * <p>Duplicates the functionality of the {@link DonationEvent#getUsername()} method</p>.
+     * @return the sender's nickname*/
+    public String getSender() { return username; }
 
     /**{@inheritDoc}
      * <p>Returns HandlerList with all handlers of this event</p>

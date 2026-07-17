@@ -10,6 +10,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -104,12 +105,13 @@ public class DonationAlertsApiCMND {
 
         ctx.getSource().getSender().sendMessage(plugin.getMessage("test.donation"));
         Bukkit.getServer().getPluginManager().callEvent(
-                DonationEvent.test(
-                        ctx.getArgument("username", String.class),
-                        ctx.getArgument("message", String.class),
-                        ctx.getArgument("amount", Float.class),
-                        ctx.getArgument("currency", String.class)
-                )
+            new DonationEvent(
+                    -1, "Donations", ctx.getArgument("username", String.class),
+                    ctx.getArgument("message", String.class), "text", "null",
+                    ctx.getArgument("amount", Float.class), ctx.getArgument("currency", String.class),
+                    1, -1, "null", null,
+                    LocalDateTime.now().format(DonationEvent.dateTimeFormatter), "null", "default"
+            )
         );
 
         return Command.SINGLE_SUCCESS;
