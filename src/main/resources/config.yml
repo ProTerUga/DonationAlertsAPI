@@ -97,12 +97,12 @@ messages:
 # ──────────────────────────────────────────────────────────────────────────────
 # MiniMessage Quick Reference
 # ──────────────────────────────────────────────────────────────────────────────
-#   <color>         – e.g., <red>, <blue>, <#FF00FF>
-#   <gradient>      – e.g., <gradient:#FFCF75:#F07832>text</gradient>
-#   <bold>, <italic>, <underlined>, <strikethrough>, <obfuscated>
-#   <click:run_command:/command>  – clickable text
-#   <hover:show_text:"hover text"> – hover tooltips
-#   <reset>          – resets all styling
+#   <color>                          e.g., <red>, <blue>, <#FF00FF>
+#   <gradient>                       e.g., <gradient:#FFCF75:#F07832>text</gradient>
+#   <bold>, <italic>                 text decorations
+#   <click:run_command:/command>     clickable text
+#   <hover:show_text:"hover text">   hover tooltips
+#   <reset>                          resets all styling
 #
 # Full documentation: https://docs.papermc.io/adventure/minimessage/format/
 # ──────────────────────────────────────────────────────────────────────────────
