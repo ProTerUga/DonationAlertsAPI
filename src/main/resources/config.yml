@@ -8,7 +8,7 @@
 #
 # REQUIRED. The plugin won't work without it.
 # Step-by-step guide you can find here:
-#
+# https://github.com/ProTerUga/DonationAlertsAPI/wiki/Obtaining-access%E2%80%90token
 access-token: ""
 
 
