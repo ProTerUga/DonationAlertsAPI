@@ -1,7 +1,9 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # DonationAlertsAPI Plugin Configuration
 # ──────────────────────────────────────────────────────────────────────────────
-
+# You can find full documentation here:
+# https://github.com/ProTerUga/DonationAlertsAPI/wiki/Configuration
+#
 # Your DonationAlerts OAuth2 access token.
 # Obtain it via the authorization code flow:
 # https://www.donationalerts.com/apidoc#authorization__authorization_code
