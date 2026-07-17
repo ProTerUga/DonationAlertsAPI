@@ -13,6 +13,7 @@ public class DonationListener implements Listener {
     public static final String MESSAGE_PLACEHOLDER = Pattern.quote("$message$");
     public static final String CURRENCY_PLACEHOLDER = Pattern.quote("$currency$");
     public static final String AMOUNT_PLACEHOLDER = Pattern.quote("$amount$");
+    public static final String RECIPIENT_AMOUNT_PLACEHOLDER = Pattern.quote("$recipient_amount$");
 
     private final DonationAlertsApi plugin;
     private final List<String> commands;
@@ -31,7 +32,8 @@ public class DonationListener implements Listener {
                         .replaceAll(SENDER_PLACEHOLDER, e.getUsername())
                         .replaceAll(MESSAGE_PLACEHOLDER, e.getMessage())
                         .replaceAll(AMOUNT_PLACEHOLDER, String.valueOf(e.getAmount()))
-                        .replaceAll(CURRENCY_PLACEHOLDER, e.getCurrency());
+                        .replaceAll(CURRENCY_PLACEHOLDER, e.getCurrency())
+                        .replaceAll(RECIPIENT_AMOUNT_PLACEHOLDER, String.valueOf(e.getAmountInUserCurrency()));
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }
         }
