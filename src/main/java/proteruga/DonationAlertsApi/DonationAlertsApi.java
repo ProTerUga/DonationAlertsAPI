@@ -33,6 +33,8 @@ public class DonationAlertsApi extends JavaPlugin {
     public final static String CONSOLE_PREFIX = "[DonationAlertsAPI] ";
     private final static String PATTERN_NEWLINE = Pattern.quote("\n");
 
+    private final List<String> commands = new ArrayList<>();
+
     private String accessToken;
     private String clientId;
     private String clientSecret;
@@ -42,7 +44,6 @@ public class DonationAlertsApi extends JavaPlugin {
     private boolean logDonations;
     private boolean logWebSocket;
     private boolean builtInCommands;
-    private List<String> commands;
     private Map<String, Component> messages;
     private boolean debug;
 
@@ -56,7 +57,6 @@ public class DonationAlertsApi extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        commands = new ArrayList<>();
         saveDefaultConfig();
         readConfig();
 
@@ -96,7 +96,7 @@ public class DonationAlertsApi extends JavaPlugin {
         builtInCommands = getConfig().getBoolean("enable-builtin-commands", false);
 
         if (builtInCommands) {
-            if (commands != null) commands.clear();
+            commands.clear();
             commands.addAll(getConfig().getStringList("commands"));
         }
 
