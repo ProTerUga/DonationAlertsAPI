@@ -1,8 +1,10 @@
 # DonationAlertsAPI
 
-[![Paper](https://img.shields.io/badge/Paper-1.21.1-purple?style=flat&logo=bukkit)](https://papermc.io/)
+[![Paper](https://img.shields.io/badge/Paper-1.21.1+-purple?style=flat&logo=bukkit)](https://papermc.io/)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://adoptium.net/)
-[![Modrinth](https://img.shields.io/badge/Modrinth-Download-green?style=flat&logo=modrinth)](https://modrinth.com/plugin/donationalertsapi) <!-- Замените ссылку после публикации -->
+[![Modrinth](https://img.shields.io/badge/Modrinth-Download-green?style=flat&logo=modrinth)](https://modrinth.com/plugin/donationalertsapi)
+[![License](https://img.shields.io/github/license/ProTerUga/DonationAlertsAPI)](https://github.com/ProTerUga/DonationAlertsAPI/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/ProTerUga/DonationAlertsAPI)](https://github.com/ProTerUga/DonationAlertsAPI/releases)
 
 **DonationAlertsAPI** is a modern, high-performance Minecraft plugin that allows you to receive real-time donation alerts directly from the [DonationAlerts](https://www.donationalerts.com/) platform in your game.
 
@@ -10,7 +12,7 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 ---
 
-## ✨ Features
+## Features
 
 - **Real-time** - Receives donation alerts instantly via DonationAlerts WebSocket.
 - **Custom event** - Fires a custom `DonationEvent` that can be listened to by any other plugin.
@@ -23,7 +25,7 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 ---
 
-## 📥 Installation
+## Installation
 
 1. Download the latest JAR file from the [Releases](https://github.com/ProTerUga/DonationAlertsAPI/releases) page or from [Modrinth](https://modrinth.com/plugin/donationalertsapi).
 2. Place the `DonationAlertsAPI-*.jar` file into the `plugins` folder of your Paper server.
@@ -33,7 +35,7 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 The `config.yml` file is auto-generated upon first start. Below are the available options:
 
@@ -152,7 +154,7 @@ debug: false
 ```
 ---
 
-## 📦 Maven Dependency (for Developers)
+## Maven Dependency (for Developers)
 
 If you want to use `DonationAlertsAPI` as a dependency in your own plugin, you can include it via **JitPack** - a build service for GitHub repositories.
 
@@ -193,7 +195,7 @@ dependencies {
 }
 ```
 
-### 📝 Example Usage in Another Plugin
+### Example Usage in Another Plugin
 
 ```java
 @EventHandler
@@ -211,7 +213,7 @@ public void onDonation(DonationEvent event) {
 depend: [DonationAlertsAPI]
 ```
 ---
-## 📦 Dependencies
+## Dependencies
 
 - [Paper API](https://papermc.io/) 1.21.1+
 - [Java-WebSocket](https://github.com/TooTallNate/Java-WebSocket) 1.5.3+
