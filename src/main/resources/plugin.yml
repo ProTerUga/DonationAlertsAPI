@@ -7,4 +7,4 @@ api-version: '1.21.1'
 load: STARTUP
 
 softdepend:
-  - placeholderapi
+  - PlaceholderAPI
