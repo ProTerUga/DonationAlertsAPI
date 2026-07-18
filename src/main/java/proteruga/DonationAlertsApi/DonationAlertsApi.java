@@ -1,19 +1,25 @@
 package proteruga.DonationAlertsApi;
 
-import com.google.gson.*;
-import com.tchristofferson.configupdater.ConfigUpdater;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -21,7 +27,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,8 +40,10 @@ import java.util.regex.Pattern;
 
 public class DonationAlertsApi extends JavaPlugin {
 
-    private final static String CONSOLE_PREFIX = "[DonationAlertsAPI] ";
+    public final static String CONSOLE_PREFIX = "[DonationAlertsAPI] ";
     private final static String PATTERN_NEWLINE = Pattern.quote("\n");
+
+    private final List<String> commands = new ArrayList<>();
 
     private String accessToken;
     private String clientId;
@@ -42,8 +54,8 @@ public class DonationAlertsApi extends JavaPlugin {
     private boolean logDonations;
     private boolean logWebSocket;
     private boolean builtInCommands;
-    private List<String> commands;
     private Map<String, Component> messages;
+    private boolean debug;
 
     private String socketToken;
     private long userId;
@@ -55,9 +67,11 @@ public class DonationAlertsApi extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        commands = new ArrayList<>();
         saveDefaultConfig();
-        readConfig();
+        if (!readConfig()) {
+            getLogger().severe(CONSOLE_PREFIX + "Failed to read configuration. Check the console for errors.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
 
         Bukkit.getPluginManager().registerEvents(new DonationListener(this, commands), this);
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
@@ -73,14 +87,57 @@ public class DonationAlertsApi extends JavaPlugin {
         scheduler.shutdownNow();
     }
 
-    public void readConfig() {
-        reloadConfig();
+    public boolean readConfig() {
+        YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(this.getResource("config.yml"), StandardCharsets.UTF_8));
+
         File configFile = new File(getDataFolder(), "config.yml");
+
+        if (!configFile.exists()) {
+            this.saveResource("config.yml", false);
+        }
+
+        YamlConfiguration currentConfig = new YamlConfiguration();
         try {
-            ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
+            currentConfig.load(configFile);
+        } catch (InvalidConfigurationException e) {
+            this.getLogger().severe(CONSOLE_PREFIX + "Yaml parsing error: " + e.getMessage());
+            return false;
+        } catch (FileNotFoundException e) {
+            this.getLogger().severe(CONSOLE_PREFIX + "File not found: " + e.getMessage());
+            return false;
         } catch (IOException e) {
-            getLogger().severe(CONSOLE_PREFIX + "ConfigUpdater file exception: " + e.getMessage());
-            getServer().getPluginManager().disablePlugin(this);
+            this.getLogger().severe(CONSOLE_PREFIX + "File error: " + e.getMessage());
+            return false;
+        }
+
+        boolean needSave = false;
+        for (String key : defaultConfig.getKeys(true)) {
+            if (!currentConfig.contains(key)) {
+                currentConfig.set(key, defaultConfig.get(key));
+                needSave = true;
+            }
+        }
+
+        for (String key : currentConfig.getKeys(true)) {
+            if (!defaultConfig.contains(key)) {
+                List<String> comments = List.of(
+                        "[InvalidSection]",
+                        "The \"" + key + "\" section is not defined in the current version of the plugin.",
+                        "Check the documentation or spelling of this section."
+                );
+                if (!currentConfig.getComments(key).contains("[InvalidSection]")) {
+                    currentConfig.setComments(key, comments);
+                    needSave = true;
+                }
+            }
+        }
+
+        if (needSave) {
+            try {
+                currentConfig.save(configFile);
+            } catch (IOException e) {
+                this.getLogger().severe(CONSOLE_PREFIX + "Could not save config: " + e.getMessage());
+            }
         }
 
         accessToken = getConfig().getString("access-token", "");
@@ -95,7 +152,7 @@ public class DonationAlertsApi extends JavaPlugin {
         builtInCommands = getConfig().getBoolean("enable-builtin-commands", false);
 
         if (builtInCommands) {
-            if (commands != null) commands.clear();
+            commands.clear();
             commands.addAll(getConfig().getStringList("commands"));
         }
 
@@ -112,11 +169,13 @@ public class DonationAlertsApi extends JavaPlugin {
             else messages = new HashMap<>();
 
             for (String key : messagesSection.getKeys(true)) {
-//                getLogger().info(CONSOLE_PREFIX + "Handling: " + key);
                 if (key.equals("prefix")) continue;
                 messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key)));
             }
         }
+
+        debug = getConfig().getBoolean("debug", false);
+        return true;
     }
 
     public boolean tryConnect() {
@@ -445,5 +504,9 @@ public class DonationAlertsApi extends JavaPlugin {
 
     public boolean allowBuiltInCommands() {
         return builtInCommands;
+    }
+
+    public boolean isDebug() {
+        return debug;
     }
 }

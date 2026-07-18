@@ -1,8 +1,10 @@
 # DonationAlertsAPI
 
-[![Paper](https://img.shields.io/badge/Paper-1.21.1-purple?style=flat&logo=bukkit)](https://papermc.io/)
+[![Paper](https://img.shields.io/badge/Paper-1.21.1+-purple?style=flat&logo=bukkit)](https://papermc.io/)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://adoptium.net/)
-[![Modrinth](https://img.shields.io/badge/Modrinth-Download-green?style=flat&logo=modrinth)](https://modrinth.com/plugin/donationalertsapi) <!-- Замените ссылку после публикации -->
+[![Modrinth](https://img.shields.io/badge/Modrinth-Download-green?style=flat&logo=modrinth)](https://modrinth.com/plugin/donationalertsapi)
+[![License](https://img.shields.io/github/license/ProTerUga/DonationAlertsAPI)](https://github.com/ProTerUga/DonationAlertsAPI/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/ProTerUga/DonationAlertsAPI)](https://github.com/ProTerUga/DonationAlertsAPI/releases)
 
 **DonationAlertsAPI** is a modern, high-performance Minecraft plugin that allows you to receive real-time donation alerts directly from the [DonationAlerts](https://www.donationalerts.com/) platform in your game.
 
@@ -10,7 +12,7 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 ---
 
-## ✨ Features
+## Features
 
 - **Real-time** - Receives donation alerts instantly via DonationAlerts WebSocket.
 - **Custom event** - Fires a custom `DonationEvent` that can be listened to by any other plugin.
@@ -23,7 +25,7 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 ---
 
-## 📥 Installation
+## Installation
 
 1. Download the latest JAR file from the [Releases](https://github.com/ProTerUga/DonationAlertsAPI/releases) page or from [Modrinth](https://modrinth.com/plugin/donationalertsapi).
 2. Place the `DonationAlertsAPI-*.jar` file into the `plugins` folder of your Paper server.
@@ -33,7 +35,7 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 The `config.yml` file is auto-generated upon first start. Below are the available options:
 
@@ -41,7 +43,9 @@ The `config.yml` file is auto-generated upon first start. Below are the availabl
 # ──────────────────────────────────────────────────────────────────────────────
 # DonationAlertsAPI Plugin Configuration
 # ──────────────────────────────────────────────────────────────────────────────
-
+# You can find full documentation here:
+# https://github.com/ProTerUga/DonationAlertsAPI/wiki/Configuration
+#
 # Your DonationAlerts OAuth2 access token.
 # Obtain it via the authorization code flow:
 # https://www.donationalerts.com/apidoc#authorization__authorization_code
@@ -84,10 +88,11 @@ enable-builtin-commands: true
 
 # List of commands to execute when a donation is received.
 # Available placeholders (case‑sensitive):
-#   $sender$   – donor's display name
-#   $amount$   – donation amount (numeric)
-#   $currency$ – currency code (USD, EUR, RUB, etc.)
-#   $message$  – donation message (can be empty)
+#   $sender$ - donor's display name
+#   $amount$ - donation amount (numeric)
+#   $currency$ - currency code (USD, EUR, RUB, etc.)
+#   $message$ - donation message (can be empty)
+#   $recipient_amount$ - actual amount that the recipient received. (numeric)
 #
 # Each command is a string exactly as you would type it in the console.
 # For Minecraft chat/actionbar/title commands, use the appropriate syntax.
@@ -114,6 +119,7 @@ messages:
     reconnect-trying: "<yellow>Reconnecting... Check result in a few seconds."
     missing-token: "<red>Cannot connect: access-token is missing."
     connection-failed: "<red>Connection failed. Check console for errors."
+    error: "<red>Failed to reload configuration. Check the console for errors."
   status:
     connected: "<gray>Connection status: <green>Connected"
     not-connected: "<gray>Connection status: <red>Not connected"
@@ -134,19 +140,21 @@ messages:
 # ──────────────────────────────────────────────────────────────────────────────
 # MiniMessage Quick Reference
 # ──────────────────────────────────────────────────────────────────────────────
-#   <color>         – e.g., <red>, <blue>, <#FF00FF>
-#   <gradient>      – e.g., <gradient:#FFCF75:#F07832>text</gradient>
-#   <bold>, <italic>, <underlined>, <strikethrough>, <obfuscated>
-#   <click:run_command:/command>  – clickable text
-#   <hover:show_text:"hover text"> – hover tooltips
-#   <reset>          – resets all styling
+#   <color>                          e.g., <red>, <blue>, <#FF00FF>
+#   <gradient>                       e.g., <gradient:#FFCF75:#F07832>text</gradient>
+#   <bold>, <italic>                 text decorations
+#   <click:run_command:/command>     clickable text
+#   <hover:show_text:"hover text">   hover tooltips
+#   <reset>                          resets all styling
 #
 # Full documentation: https://docs.papermc.io/adventure/minimessage/format/
 # ──────────────────────────────────────────────────────────────────────────────
+
+debug: false
 ```
 ---
 
-## 📦 Maven Dependency (for Developers)
+## Maven Dependency (for Developers)
 
 If you want to use `DonationAlertsAPI` as a dependency in your own plugin, you can include it via **JitPack** - a build service for GitHub repositories.
 
@@ -187,7 +195,7 @@ dependencies {
 }
 ```
 
-### 📝 Example Usage in Another Plugin
+### Example Usage in Another Plugin
 
 ```java
 @EventHandler
@@ -205,7 +213,7 @@ public void onDonation(DonationEvent event) {
 depend: [DonationAlertsAPI]
 ```
 ---
-## 📦 Dependencies
+## Dependencies
 
 - [Paper API](https://papermc.io/) 1.21.1+
 - [Java-WebSocket](https://github.com/TooTallNate/Java-WebSocket) 1.5.3+

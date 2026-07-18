@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.proteruga</groupId>
   <artifactId>donation-alerts-api</artifactId>
-  <name>donateplugin</name>
-  <version>1.0.1</version>
+  <name>donation-alerts-api</name>
+  <version>1.0.2</version>
   <build>
     <defaultGoal>clean package</defaultGoal>
     <resources>
@@ -13,6 +13,7 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+    <finalName>DonationAlertsAPI-${project.version}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -68,10 +69,6 @@
                 <relocation>
                   <pattern>org.java_websocket</pattern>
                   <shadedPattern>io.github.proteruga.libs.org.java_websocket</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.tchristofferson</pattern>
-                  <shadedPattern>io.github.proteruga.libs.com.tchristofferson</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

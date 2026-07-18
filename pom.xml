@@ -6,9 +6,9 @@
 
     <groupId>com.github.proteruga</groupId>
     <artifactId>donation-alerts-api</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
-    <name>donateplugin</name>
+    <name>donation-alerts-api</name>
 
     <properties>
         <java.version>21</java.version>
@@ -16,6 +16,7 @@
     </properties>
 
     <build>
+        <finalName>DonationAlertsAPI-${project.version}</finalName>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
@@ -76,10 +77,6 @@
                                     <pattern>org.java_websocket</pattern>
                                     <shadedPattern>io.github.proteruga.libs.org.java_websocket</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>com.tchristofferson</pattern>
-                                    <shadedPattern>io.github.proteruga.libs.com.tchristofferson</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -121,11 +118,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.tchristofferson</groupId>
-            <artifactId>ConfigUpdater</artifactId>
-            <version>2.2-FIXED</version>
         </dependency>
     </dependencies>
 </project>
