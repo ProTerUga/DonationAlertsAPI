@@ -516,4 +516,8 @@ public class DonationAlertsApi extends JavaPlugin {
     public boolean isDebug() {
         return debug;
     }
+
+    public static boolean isPlaceholdersEnabled() {
+        return placeholdersEnabled;
+    }
 }
