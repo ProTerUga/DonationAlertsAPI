@@ -43,7 +43,7 @@ public class DonationAlertsApi extends JavaPlugin {
     public final static String CONSOLE_PREFIX = "[DonationAlertsAPI] ";
     private final static String PATTERN_NEWLINE = Pattern.quote("\n");
 
-    private static boolean placeholders = false;
+    private static boolean placeholdersEnabled = false;
 
     private final List<String> commands = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class DonationAlertsApi extends JavaPlugin {
     @Override
     public void onEnable() {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            placeholders = true;
+            placeholdersEnabled = true;
         }
 
         saveDefaultConfig();
