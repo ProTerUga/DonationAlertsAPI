@@ -41,7 +41,9 @@ The `config.yml` file is auto-generated upon first start. Below are the availabl
 # ──────────────────────────────────────────────────────────────────────────────
 # DonationAlertsAPI Plugin Configuration
 # ──────────────────────────────────────────────────────────────────────────────
-
+# You can find full documentation here:
+# https://github.com/ProTerUga/DonationAlertsAPI/wiki/Configuration
+#
 # Your DonationAlerts OAuth2 access token.
 # Obtain it via the authorization code flow:
 # https://www.donationalerts.com/apidoc#authorization__authorization_code
@@ -84,10 +86,11 @@ enable-builtin-commands: true
 
 # List of commands to execute when a donation is received.
 # Available placeholders (case‑sensitive):
-#   $sender$   – donor's display name
-#   $amount$   – donation amount (numeric)
-#   $currency$ – currency code (USD, EUR, RUB, etc.)
-#   $message$  – donation message (can be empty)
+#   $sender$ - donor's display name
+#   $amount$ - donation amount (numeric)
+#   $currency$ - currency code (USD, EUR, RUB, etc.)
+#   $message$ - donation message (can be empty)
+#   $recipient_amount$ - actual amount that the recipient received. (numeric)
 #
 # Each command is a string exactly as you would type it in the console.
 # For Minecraft chat/actionbar/title commands, use the appropriate syntax.
@@ -114,6 +117,7 @@ messages:
     reconnect-trying: "<yellow>Reconnecting... Check result in a few seconds."
     missing-token: "<red>Cannot connect: access-token is missing."
     connection-failed: "<red>Connection failed. Check console for errors."
+    error: "<red>Failed to reload configuration. Check the console for errors."
   status:
     connected: "<gray>Connection status: <green>Connected"
     not-connected: "<gray>Connection status: <red>Not connected"
@@ -134,12 +138,12 @@ messages:
 # ──────────────────────────────────────────────────────────────────────────────
 # MiniMessage Quick Reference
 # ──────────────────────────────────────────────────────────────────────────────
-#   <color>         – e.g., <red>, <blue>, <#FF00FF>
-#   <gradient>      – e.g., <gradient:#FFCF75:#F07832>text</gradient>
-#   <bold>, <italic>, <underlined>, <strikethrough>, <obfuscated>
-#   <click:run_command:/command>  – clickable text
-#   <hover:show_text:"hover text"> – hover tooltips
-#   <reset>          – resets all styling
+#   <color>                          e.g., <red>, <blue>, <#FF00FF>
+#   <gradient>                       e.g., <gradient:#FFCF75:#F07832>text</gradient>
+#   <bold>, <italic>                 text decorations
+#   <click:run_command:/command>     clickable text
+#   <hover:show_text:"hover text">   hover tooltips
+#   <reset>                          resets all styling
 #
 # Full documentation: https://docs.papermc.io/adventure/minimessage/format/
 # ──────────────────────────────────────────────────────────────────────────────
