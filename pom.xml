@@ -6,9 +6,9 @@
 
     <groupId>com.github.proteruga</groupId>
     <artifactId>donation-alerts-api</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
-    <name>donateplugin</name>
+    <name>donation-alerts-api</name>
 
     <properties>
         <java.version>21</java.version>
@@ -16,6 +16,7 @@
     </properties>
 
     <build>
+        <finalName>DonationAlertsAPI-${project.version}</finalName>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
