@@ -6,19 +6,5 @@ main: proteruga.DonationAlertsApi.DonationAlertsApi
 api-version: '1.21.1'
 load: STARTUP
 
-commands:
-  daapi:
-    usage: "Use: /daapi <reload | status | test>"
-    description: Reloads the plugin configuration
-    permission-message: You don't have permission.
-
-permissions:
-  daapi.reload:
-    description: Reload the plugin configuration.
-    default: op
-  daapi.status:
-    description: Check connection status.
-    default: op
-  daapi.test:
-    description: Test donation event.
-    default: op
+softdepend:
+  - placeholderapi
