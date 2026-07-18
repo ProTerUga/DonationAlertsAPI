@@ -76,6 +76,7 @@ public class DonationAlertsApi extends JavaPlugin {
 
     public void readConfig() {
         reloadConfig();
+    public boolean readConfig() {
         File configFile = new File(getDataFolder(), "config.yml");
         try {
             ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
@@ -119,6 +120,7 @@ public class DonationAlertsApi extends JavaPlugin {
         }
 
         debug = getConfig().getBoolean("debug", false);
+        return true;
     }
 
     public boolean tryConnect() {
