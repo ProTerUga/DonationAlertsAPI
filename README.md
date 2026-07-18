@@ -218,4 +218,3 @@ depend: [DonationAlertsAPI]
 - [Paper API](https://papermc.io/) 1.21.1+
 - [Java-WebSocket](https://github.com/TooTallNate/Java-WebSocket) 1.5.3+
 - [Gson](https://github.com/google/gson) 2.10.1+
-- [ConfigUpdater](https://github.com/ProTerUga/Config-Updater) 2.2-FIXED (fork with Guava removed)
