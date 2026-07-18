@@ -77,6 +77,7 @@ messages:
     reconnect-trying: "<yellow>Reconnecting... Check result in a few seconds."
     missing-token: "<red>Cannot connect: access-token is missing."
     connection-failed: "<red>Connection failed. Check console for errors."
+    error: "<red>Failed to reload configuration. Check the console for errors."
   status:
     connected: "<gray>Connection status: <green>Connected"
     not-connected: "<gray>Connection status: <red>Not connected"

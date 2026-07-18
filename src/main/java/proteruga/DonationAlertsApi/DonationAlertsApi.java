@@ -1,19 +1,22 @@
 package proteruga.DonationAlertsApi;
 
 import com.google.gson.*;
-import com.tchristofferson.configupdater.ConfigUpdater;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -58,7 +61,10 @@ public class DonationAlertsApi extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        readConfig();
+        if (!readConfig()) {
+            getLogger().severe(CONSOLE_PREFIX + "Failed to read configuration. Check the console for errors.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
 
         Bukkit.getPluginManager().registerEvents(new DonationListener(this, commands), this);
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
@@ -74,15 +80,43 @@ public class DonationAlertsApi extends JavaPlugin {
         scheduler.shutdownNow();
     }
 
-    public void readConfig() {
-        reloadConfig();
     public boolean readConfig() {
+        YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(this.getResource("config.yml"), StandardCharsets.UTF_8));
+
         File configFile = new File(getDataFolder(), "config.yml");
+
+        if (!configFile.exists()) {
+            this.saveResource("config.yml", false);
+        }
+
+        YamlConfiguration currentConfig = new YamlConfiguration();
         try {
-            ConfigUpdater.update(this, "config.yml", configFile, new ArrayList<>());
+            currentConfig.load(configFile);
+        } catch (InvalidConfigurationException e) {
+            this.getLogger().severe(CONSOLE_PREFIX + "Yaml parsing error: " + e.getMessage());
+            return false;
+        } catch (FileNotFoundException e) {
+            this.getLogger().severe(CONSOLE_PREFIX + "File not found: " + e.getMessage());
+            return false;
         } catch (IOException e) {
-            getLogger().severe(CONSOLE_PREFIX + "ConfigUpdater file exception: " + e.getMessage());
-            getServer().getPluginManager().disablePlugin(this);
+            this.getLogger().severe(CONSOLE_PREFIX + "File error: " + e.getMessage());
+            return false;
+        }
+
+        boolean needSave = false;
+        for (String key : defaultConfig.getKeys(true)) {
+            if (!currentConfig.contains(key)) {
+                currentConfig.set(key, defaultConfig.get(key));
+                needSave = true;
+            }
+        }
+
+        if (needSave) {
+            try {
+                currentConfig.save(configFile);
+            } catch (IOException e) {
+                this.getLogger().severe(CONSOLE_PREFIX + "Could not save config: " + e.getMessage());
+            }
         }
 
         accessToken = getConfig().getString("access-token", "");

@@ -64,8 +64,10 @@ public class DonationAlertsApiCMND {
                 .build();
     }
     private static int reload(CommandContext<CommandSourceStack> ctx) {
-        plugin.reloadConfig();
-        plugin.readConfig();
+        if (!plugin.readConfig()) {
+            ctx.getSource().getSender().sendMessage(plugin.getMessage("reload.error"));
+            return Command.SINGLE_SUCCESS;
+        }
         ctx.getSource().getSender().sendMessage(plugin.getMessage("reload.successfully-reloaded"));
 
         boolean trying = plugin.tryConnect();

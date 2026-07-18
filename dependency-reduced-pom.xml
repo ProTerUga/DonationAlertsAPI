@@ -69,10 +69,6 @@
                   <pattern>org.java_websocket</pattern>
                   <shadedPattern>io.github.proteruga.libs.org.java_websocket</shadedPattern>
                 </relocation>
-                <relocation>
-                  <pattern>com.tchristofferson</pattern>
-                  <shadedPattern>io.github.proteruga.libs.com.tchristofferson</shadedPattern>
-                </relocation>
               </relocations>
             </configuration>
           </execution>

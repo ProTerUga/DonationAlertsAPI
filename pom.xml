@@ -76,10 +76,6 @@
                                     <pattern>org.java_websocket</pattern>
                                     <shadedPattern>io.github.proteruga.libs.org.java_websocket</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>com.tchristofferson</pattern>
-                                    <shadedPattern>io.github.proteruga.libs.com.tchristofferson</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -121,11 +117,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.tchristofferson</groupId>
-            <artifactId>ConfigUpdater</artifactId>
-            <version>2.2-FIXED</version>
         </dependency>
     </dependencies>
 </project>
