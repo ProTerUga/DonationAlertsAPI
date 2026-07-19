@@ -45,12 +45,22 @@ log-web-socket: false        # Log raw WebSocket messages (incoming/outgoing)
 enable-builtin-commands: true
 
 # List of commands to execute when a donation is received.
-# Available placeholders (case‑sensitive):
+# Available built-in placeholders (case‑sensitive):
 #   $sender$ - donor's display name
 #   $amount$ - donation amount (numeric)
 #   $currency$ - currency code (USD, EUR, RUB, etc.)
 #   $message$ - donation message (can be empty)
 #   $recipient_amount$ - actual amount that the recipient received. (numeric)
+#
+# Also you can use placeholders of PlaceholderAPI.
+# This will require a working PlaceholderAPI plugin installed on your server.
+# https://github.com/PlaceholderAPI/PlaceholderAPI
+# (!) They will NOT be parsed on behalf of any player. Parsing is only performed on --null.
+#
+# Here are some useful extensions to solve your problems:
+# ParseOther - https://api.extendedclip.com/expansions/parseother/
+# Javascript - https://api.extendedclip.com/expansions/javascript/
+# Math - https://api.extendedclip.com/expansions/math/
 #
 # Each command is a string exactly as you would type it in the console.
 # For Minecraft chat/actionbar/title commands, use the appropriate syntax.
