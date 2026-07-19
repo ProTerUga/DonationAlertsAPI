@@ -16,6 +16,8 @@ import java.time.format.DateTimeFormatter;
  * @since 1.0.0*/
 public class DonationEvent extends Event {
 
+    /**The default {@link DateTimeFormatter} for parsing String-based fields (e.g. {@link DonationEvent#createdAt}, {@link DonationEvent#shownAt}).
+     * <p>Pattern is {@code yyyy-MM-dd HH:mm:ss}.</p>*/
     public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final HandlerList handlers = new HandlerList();
 
