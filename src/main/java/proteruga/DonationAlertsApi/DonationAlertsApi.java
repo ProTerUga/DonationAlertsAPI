@@ -72,6 +72,9 @@ public class DonationAlertsApi extends JavaPlugin {
     public void onEnable() {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             placeholdersEnabled = true;
+            getLogger().info(CONSOLE_PREFIX + "PlaceholderAPI plugin detected, placeholder support available.");
+        } else {
+            getLogger().info(CONSOLE_PREFIX + "PlaceholderAPI plugin not found, launching without placeholder support.");
         }
 
         saveDefaultConfig();
