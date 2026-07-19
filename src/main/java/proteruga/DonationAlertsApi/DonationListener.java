@@ -34,6 +34,7 @@ public class DonationListener implements Listener {
                         .replaceAll(AMOUNT_PLACEHOLDER, String.valueOf(e.getAmount()))
                         .replaceAll(CURRENCY_PLACEHOLDER, e.getCurrency())
                         .replaceAll(RECIPIENT_AMOUNT_PLACEHOLDER, String.valueOf(e.getAmountInUserCurrency()));
+                command = SafePAPI.setPlaceholders(command);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }
         }

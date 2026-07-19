@@ -43,6 +43,8 @@ public class DonationAlertsApi extends JavaPlugin {
     public final static String CONSOLE_PREFIX = "[DonationAlertsAPI] ";
     private final static String PATTERN_NEWLINE = Pattern.quote("\n");
 
+    private static boolean placeholdersEnabled = false;
+
     private final List<String> commands = new ArrayList<>();
 
     private String accessToken;
@@ -57,6 +59,7 @@ public class DonationAlertsApi extends JavaPlugin {
     private Map<String, Component> messages;
     private boolean debug;
 
+
     private String socketToken;
     private long userId;
     private WebSocketClient wsClient;
@@ -67,6 +70,13 @@ public class DonationAlertsApi extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            placeholdersEnabled = true;
+            getLogger().info(CONSOLE_PREFIX + "PlaceholderAPI plugin detected, placeholder support available.");
+        } else {
+            getLogger().info(CONSOLE_PREFIX + "PlaceholderAPI plugin not found, launching without placeholder support.");
+        }
+
         saveDefaultConfig();
         if (!readConfig()) {
             getLogger().severe(CONSOLE_PREFIX + "Failed to read configuration. Check the console for errors.");
@@ -508,5 +518,9 @@ public class DonationAlertsApi extends JavaPlugin {
 
     public boolean isDebug() {
         return debug;
+    }
+
+    public static boolean isPlaceholdersEnabled() {
+        return placeholdersEnabled;
     }
 }
