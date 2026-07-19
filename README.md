@@ -16,10 +16,10 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 
 - **Real-time** - Receives donation alerts instantly via DonationAlerts WebSocket.
 - **Custom event** - Fires a custom `DonationEvent` that can be listened to by any other plugin.
-- **Easy configuration** - All settings are managed via a simple `config.yml` file.
+- **Easy configuration** - All settings are managed via a simple `config.yml` file and command `/daapi auth` to easily obtain an access-key.
 - **Reload command** - Reload configuration without restarting the server (`/daapi reload`).
-- **Paper-compatible** - Designed for Paper 1.21.1+
 - **MiniMessage** - Native support for MiniMessage is built into the plugin.
+- **PlaceholderAPI** - PlaceholderAPI support in built-in commands.
 
 ![Built-in commands](assets/banner.png)
 
@@ -30,7 +30,7 @@ The plugin connects to the DonationAlerts WebSocket API and fires custom events 
 1. Download the latest JAR file from the [Releases](https://github.com/ProTerUga/DonationAlertsAPI/releases) page or from [Modrinth](https://modrinth.com/plugin/donationalertsapi).
 2. Place the `DonationAlertsAPI-*.jar` file into the `plugins` folder of your Paper server.
 3. Start (or restart) the server to generate the default configuration.
-4. Edit the `plugins/DonationAlertsAPI/config.yml` with your DonationAlerts account details (see Configuration below).
+4. Edit the `plugins/DonationAlertsAPI/config.yml` with your DonationAlerts account details (see [Configuration](https://github.com/ProTerUga/DonationAlertsAPI/wiki/Configuration) for more information).
 5. Reload the plugin with `/daapi reload` or restart the server again.
 
 ---
@@ -87,12 +87,22 @@ log-web-socket: false        # Log raw WebSocket messages (incoming/outgoing)
 enable-builtin-commands: true
 
 # List of commands to execute when a donation is received.
-# Available placeholders (case‑sensitive):
+# Available built-in placeholders (case‑sensitive):
 #   $sender$ - donor's display name
 #   $amount$ - donation amount (numeric)
 #   $currency$ - currency code (USD, EUR, RUB, etc.)
 #   $message$ - donation message (can be empty)
 #   $recipient_amount$ - actual amount that the recipient received. (numeric)
+#
+# Also you can use placeholders of PlaceholderAPI.
+# This will require a working PlaceholderAPI plugin installed on your server.
+# https://github.com/PlaceholderAPI/PlaceholderAPI
+# (!) They will NOT be parsed on behalf of any player. Parsing is only performed on --null.
+#
+# Here are some useful extensions to solve your problems:
+# ParseOther - https://api.extendedclip.com/expansions/parseother/
+# Javascript - https://api.extendedclip.com/expansions/javascript/
+# Math - https://api.extendedclip.com/expansions/math/
 #
 # Each command is a string exactly as you would type it in the console.
 # For Minecraft chat/actionbar/title commands, use the appropriate syntax.
@@ -218,4 +228,3 @@ depend: [DonationAlertsAPI]
 - [Paper API](https://papermc.io/) 1.21.1+
 - [Java-WebSocket](https://github.com/TooTallNate/Java-WebSocket) 1.5.3+
 - [Gson](https://github.com/google/gson) 2.10.1+
-- [ConfigUpdater](https://github.com/ProTerUga/Config-Updater) 2.2-FIXED (fork with Guava removed)
