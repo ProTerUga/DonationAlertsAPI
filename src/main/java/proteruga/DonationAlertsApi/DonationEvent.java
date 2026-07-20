@@ -2,7 +2,7 @@ package proteruga.DonationAlertsApi;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.format.DateTimeFormatter;
 
@@ -146,7 +146,7 @@ public class DonationEvent extends Event {
      * <p>Returns HandlerList with all handlers of this event</p>
      * @return HandlerList with all handlers*/
     @Override
-    public @NonNull HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 
