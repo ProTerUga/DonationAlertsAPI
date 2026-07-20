@@ -97,6 +97,7 @@ messages:
     not-connected: "<gray>Connection status: <red>Not connected"
   test:
     usage: "Use /donationalertsapi test <SenderName> <Amount> <Currency> \"<Message>\""
+    number-format-error: "<red>Invalid format of float number"
     connection-warning: "<yellow>Warning! DonationAlerts is NOT connected!"
     donation: "<green>The donation was successfully triggered."
   auth:
