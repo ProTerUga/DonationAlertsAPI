@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -92,10 +91,6 @@ public class DonationAlertsApi extends JavaPlugin {
             pluginCommand.setTabCompleter(donationCommand);
         }
         else getLogger().severe(CONSOLE_PREFIX + "Could not register a command.");
-
-//        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
-//                commands.registrar().register(DonationAlertsApiCMND.command(this), List.of("donationalertsapi", "donationapi", "donationalerts"))
-//        );
 
         tryConnect();
     }
