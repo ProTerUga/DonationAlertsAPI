@@ -1,7 +1,7 @@
 # DonationAlertsAPI
 
-[![Paper](https://img.shields.io/badge/Paper-1.21.1+-purple?style=flat&logo=bukkit)](https://papermc.io/)
-[![Java](https://img.shields.io/badge/Java-21-orange)](https://adoptium.net/)
+[![Paper](https://img.shields.io/badge/Paper-1.18.2+-purple?style=flat&logo=bukkit)](https://papermc.io/)
+[![Java](https://img.shields.io/badge/Java-17+-orange)](https://adoptium.net/)
 [![Modrinth](https://img.shields.io/badge/Modrinth-Download-green?style=flat&logo=modrinth)](https://modrinth.com/plugin/donationalertsapi)
 [![License](https://img.shields.io/github/license/ProTerUga/DonationAlertsAPI)](https://github.com/ProTerUga/DonationAlertsAPI/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/v/release/ProTerUga/DonationAlertsAPI)](https://github.com/ProTerUga/DonationAlertsAPI/releases)
@@ -123,6 +123,10 @@ commands:
 
 messages:
   prefix: "<dark_gray>[<gradient:#F2A544:#FFDC80>DonationAlertsAPI</gradient>]</dark_gray> "
+  command:
+    usage: "Use /donationalertsapi <...>"
+    unknown: "<red>Unknown command."
+    dont-have-permission: "<red>You don't have permission to do it."
   reload:
     successfully-reloaded: "<green>Configuration reloaded!"
     successfully-connected: "<green>Successfully connected to DonationAlerts!"
@@ -134,6 +138,8 @@ messages:
     connected: "<gray>Connection status: <green>Connected"
     not-connected: "<gray>Connection status: <red>Not connected"
   test:
+    usage: "Use /donationalertsapi test <SenderName> <Amount> <Currency> \"<Message>\""
+    number-format-error: "<red>Invalid format of float number"
     connection-warning: "<yellow>Warning! DonationAlerts is NOT connected!"
     donation: "<green>The donation was successfully triggered."
   auth:
@@ -142,7 +148,7 @@ messages:
           from the search bar (...?code=<code>): <underlined><white><click:open_url:''$url$''><hover:show_text:''Click''>$url$<reset><br>
           <aqua>After that, run at console /daapi token <code>'
   token:
-    empty-code: "<red>Code cannot be empty."
+    usage: "Use /donationalertsapi token <YourClientCode>"
     successfully-obtained: "<green>Access token successfully obtained and saved! The plugin will reconnect."
     failed: "<red>Failed to exchange code. Check console for details."
 
@@ -187,7 +193,7 @@ repositories {
 ```
 
 ### 2. Add the dependency
-Replace `VERSION` with the latest release tag (e.g., `1.0.0`) or a specific commit hash.
+Replace `VERSION` with the latest release tag.
 
 **Maven** (`pom.xml`):
 ```xml
@@ -225,6 +231,6 @@ depend: [DonationAlertsAPI]
 ---
 ## Dependencies
 
-- [Paper API](https://papermc.io/) 1.21.1+
+- [Paper API](https://papermc.io/) 1.18.2+
 - [Java-WebSocket](https://github.com/TooTallNate/Java-WebSocket) 1.5.3+
 - [Gson](https://github.com/google/gson) 2.10.1+
