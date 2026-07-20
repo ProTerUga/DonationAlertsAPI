@@ -122,24 +122,22 @@ public class DonationAlertsApi extends JavaPlugin {
 
         boolean needSave = false;
         for (String key : defaultConfig.getKeys(true)) {
-            if (!currentConfig.contains(key)) {
-                currentConfig.set(key, defaultConfig.get(key));
-                needSave = true;
-            }
+            if (currentConfig.contains(key)) continue;
+            currentConfig.set(key, defaultConfig.get(key));
+            needSave = true;
         }
 
         for (String key : currentConfig.getKeys(true)) {
-            if (!defaultConfig.contains(key)) {
-                List<String> comments = List.of(
-                        "[InvalidSection]",
-                        "The \"" + key + "\" section is not defined in the current version of the plugin.",
+            if (defaultConfig.contains(key)) continue;
+            List<String> comments = List.of(
+                    "[InvalidSection]",
+                    "The \"" + key + "\" section is not defined in the current version of the plugin.",
                         "Check the documentation or spelling of this section."
-                );
-                if (!currentConfig.getComments(key).contains("[InvalidSection]")) {
-                    currentConfig.setComments(key, comments);
-                    needSave = true;
-                }
-            }
+            );
+
+            if (currentConfig.getComments(key).contains("[InvalidSection]")) continue;
+            currentConfig.setComments(key, comments);
+            needSave = true;
         }
 
         if (needSave) {
