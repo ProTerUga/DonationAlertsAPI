@@ -16,10 +16,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -98,7 +95,14 @@ public class DonationAlertsApi extends JavaPlugin {
     }
 
     public boolean readConfig() {
-        YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(this.getResource("config.yml"), StandardCharsets.UTF_8));
+        InputStream configResource = this.getResource("config.yml");
+
+        if (configResource == null) {
+            this.getLogger().severe(CONSOLE_PREFIX + "Failed to get config.yml from resources of this plugin.");
+            return false;
+        }
+
+        YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(configResource, StandardCharsets.UTF_8));
 
         File configFile = new File(getDataFolder(), "config.yml");
 
