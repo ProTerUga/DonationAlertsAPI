@@ -28,7 +28,7 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(plugin.getMessage("command.usage"));
+            plugin.sendMessage(sender, plugin.getMessage("command.usage"));
             return true;
         }
 
@@ -38,7 +38,7 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
             case "auth" -> authCommand(sender);
             case "token" -> tokenCommand(sender, args);
             case "test" -> testCommand(sender, args);
-            default -> sender.sendMessage(plugin.getMessage("command.unknown"));
+            default -> plugin.sendMessage(sender, plugin.getMessage("command.unknown"));
         }
 
         return true;
@@ -46,27 +46,27 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
 
     private void reloadCommand(CommandSender sender) {
         if (!sender.hasPermission("daapi.reload")) {
-            sender.sendMessage(plugin.getMessage("command.dont-have-permission"));
+            plugin.sendMessage(sender, plugin.getMessage("command.dont-have-permission"));
             return;
         }
 
         if (!plugin.readConfig()) {
-            sender.sendMessage(plugin.getMessage("reload.error"));
+            plugin.sendMessage(sender, plugin.getMessage("reload.error"));
             return;
         }
-        sender.sendMessage(plugin.getMessage("reload.successfully-reloaded"));
+        plugin.sendMessage(sender, plugin.getMessage("reload.successfully-reloaded"));
 
         boolean trying = plugin.tryConnect();
 
         if (!trying) {
-            sender.sendMessage(plugin.getMessage("reload.missing-token"));
+            plugin.sendMessage(sender, plugin.getMessage("reload.missing-token"));
             return;
         }
 
-        sender.sendMessage(plugin.getMessage("reload.reconnect-trying"));
+        plugin.sendMessage(sender, plugin.getMessage("reload.reconnect-trying"));
 
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            sender.sendMessage(plugin.getMessage(
+            plugin.sendMessage(sender, plugin.getMessage(
                     plugin.isConnected()
                             ? "reload.successfully-connected"
                             : "reload.connection-failed")
@@ -76,11 +76,11 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
 
     private void statusCommand(CommandSender sender) {
         if (!sender.hasPermission("daapi.status")) {
-            sender.sendMessage(plugin.getMessage("command.dont-have-permission"));
+            plugin.sendMessage(sender, plugin.getMessage("command.dont-have-permission"));
             return;
         }
 
-        sender.sendMessage(plugin.getMessage(plugin.isConnected()
+        plugin.sendMessage(sender, plugin.getMessage(plugin.isConnected()
                 ? "status.connected"
                 : "status.not-connected")
         );
@@ -88,18 +88,18 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
 
     private void authCommand(CommandSender sender) {
         if (!sender.hasPermission("daapi.auth")) {
-            sender.sendMessage(plugin.getMessage("command.dont-have-permission"));
+            plugin.sendMessage(sender, plugin.getMessage("command.dont-have-permission"));
             return;
         }
 
         String url = plugin.generateAuthUrl();
 
         if (url == null) {
-            sender.sendMessage(plugin.getMessage("auth.missing-client-id"));
+            plugin.sendMessage(sender, plugin.getMessage("auth.missing-client-id"));
             return;
         }
 
-        sender.sendMessage(
+        plugin.sendMessage(sender, 
                 MiniMessage.miniMessage().deserialize(
                         MiniMessage.miniMessage().serialize(
                                 plugin.getMessage("auth.url-message")
@@ -110,12 +110,12 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
 
     private void tokenCommand(CommandSender sender, String[] args) {
         if (!sender.hasPermission("daapi.token")) {
-            sender.sendMessage(plugin.getMessage("command.dont-have-permission"));
+            plugin.sendMessage(sender, plugin.getMessage("command.dont-have-permission"));
             return;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(plugin.getMessage("token.usage"));
+            plugin.sendMessage(sender, plugin.getMessage("token.usage"));
             return;
         }
 
@@ -124,7 +124,7 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             boolean success = plugin.exchangeCodeForToken(code);
             plugin.getServer().getScheduler().runTask(plugin, () -> {
-                sender.sendMessage(plugin.getMessage(success
+                plugin.sendMessage(sender, plugin.getMessage(success
                         ? "token.successfully-obtained"
                         : "token.failed"
                 ));
@@ -133,12 +133,12 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
     }
     private void testCommand(CommandSender sender, String[] args) {
         if (!sender.hasPermission("daapi.test")) {
-            sender.sendMessage(plugin.getMessage("command.dont-have-permission"));
+            plugin.sendMessage(sender, plugin.getMessage("command.dont-have-permission"));
             return;
         }
 
         if (args.length < 5) {
-            sender.sendMessage(plugin.getMessage("test.usage"));
+            plugin.sendMessage(sender, plugin.getMessage("test.usage"));
             return;
         }
 
@@ -147,7 +147,7 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
         try {
             amount = Float.parseFloat(args[2]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(plugin.getMessage("test.number-format-error"));
+            plugin.sendMessage(sender, plugin.getMessage("test.number-format-error"));
             return;
         }
         String currency = args[3];
@@ -171,10 +171,10 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
         }
 
         if (!plugin.isConnected()) {
-            sender.sendMessage(plugin.getMessage("test.connection-warning"));
+            plugin.sendMessage(sender, plugin.getMessage("test.connection-warning"));
         }
 
-        sender.sendMessage(plugin.getMessage("test.donation"));
+        plugin.sendMessage(sender, plugin.getMessage("test.donation"));
         Bukkit.getServer().getPluginManager().callEvent(
                 new DonationEvent(
                         -1, "Donations", username, message, "text", "null",
