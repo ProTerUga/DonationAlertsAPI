@@ -46,6 +46,7 @@ public class DonationAlertsApi extends JavaPlugin {
     private static boolean placeholdersEnabled = false;
 
     private final List<String> commands = new ArrayList<>();
+    private final Map<String, Component> messages = new HashMap<>();
 
     private String accessToken;
     private String clientId;
@@ -56,7 +57,6 @@ public class DonationAlertsApi extends JavaPlugin {
     private boolean logDonations;
     private boolean logWebSocket;
     private boolean builtInCommands;
-    private Map<String, Component> messages;
     private boolean debug;
 
 
@@ -166,23 +166,18 @@ public class DonationAlertsApi extends JavaPlugin {
             commands.addAll(getConfig().getStringList("commands"));
         }
 
-        String prefix = getConfig().getString("messages.prefix");
-
 
         ConfigurationSection messagesSection = getConfig().getConfigurationSection("messages");
 
-        if (messagesSection == null) {
-            getLogger().severe(CONSOLE_PREFIX + "Missing messages section in config.yml!");
-        }
-        else {
-            if (messages != null) messages.clear();
-            else messages = new HashMap<>();
-
+        if (messagesSection != null) {
+            messages.clear();
+            String prefix = getConfig().getString("messages.prefix");
             for (String key : messagesSection.getKeys(true)) {
                 if (key.equals("prefix")) continue;
                 messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key)));
             }
         }
+        else getLogger().severe(CONSOLE_PREFIX + "Missing messages section in config.yml!");
 
         debug = getConfig().getBoolean("debug", false);
         return true;
