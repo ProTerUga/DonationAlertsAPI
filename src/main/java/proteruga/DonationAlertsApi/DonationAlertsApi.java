@@ -6,8 +6,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.jetbrains.annotations.NotNull;
+import proteruga.DonationAlertsApi.BasicCommand.DonationCommand;
 
 import java.io.*;
 import java.net.URI;
@@ -81,9 +84,14 @@ public class DonationAlertsApi extends JavaPlugin {
         }
 
         Bukkit.getPluginManager().registerEvents(new DonationListener(this, commands), this);
-        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
-                commands.registrar().register(DonationAlertsApiCMND.command(this), List.of("donationalertsapi", "donationapi", "donationalerts"))
-        );
+
+        DonationCommand donationCommand = new DonationCommand(this);
+        PluginCommand pluginCommand = getCommand("donationalertsapi");
+        if (pluginCommand != null) {
+            pluginCommand.setExecutor(donationCommand);
+            pluginCommand.setTabCompleter(donationCommand);
+        }
+        else getLogger().severe(CONSOLE_PREFIX + "Could not register a command.");
 
 //        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
 //                commands.registrar().register(DonationAlertsApiCMND.command(this), List.of("donationalertsapi", "donationapi", "donationalerts"))
@@ -177,10 +185,10 @@ public class DonationAlertsApi extends JavaPlugin {
 
         if (messagesSection != null) {
             messages.clear();
-            String prefix = getConfig().getString("messages.prefix", "Missing message.prefix ");
+            String prefix = getConfig().getString("messages.prefix", "Missing messages.prefix ");
             for (String key : messagesSection.getKeys(true)) {
                 if (key.equals("prefix")) continue;
-                messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key, "Missing " + key)));
+                messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key)));
             }
         }
         else getLogger().severe(CONSOLE_PREFIX + "Missing messages section in config.yml!");
@@ -510,7 +518,7 @@ public class DonationAlertsApi extends JavaPlugin {
     }
 
     public @NotNull Component getMessage(@NotNull String key) {
-        return messages.getOrDefault(key, Component.empty());
+        return messages.getOrDefault(key, Component.text("Missing message " + key).color(TextColor.fromCSSHexString("#ff5555")));
     }
 
     public boolean allowBuiltInCommands() {
