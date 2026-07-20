@@ -121,10 +121,6 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
         }
 
         String code = args[1];
-        if (code.isBlank()) {
-            sender.sendMessage(plugin.getMessage("token.empty-code"));
-            return;
-        }
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             boolean success = plugin.exchangeCodeForToken(code);

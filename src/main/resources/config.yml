@@ -107,7 +107,6 @@ messages:
           <aqua>After that, run at console /daapi token <code>'
   token:
     usage: "Use /donationalertsapi token <YourClientCode>"
-    empty-code: "<red>Code cannot be empty."
     successfully-obtained: "<green>Access token successfully obtained and saved! The plugin will reconnect."
     failed: "<red>Failed to exchange code. Check console for details."
 
