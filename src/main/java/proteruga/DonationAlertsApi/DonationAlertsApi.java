@@ -7,7 +7,10 @@ import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -514,6 +517,14 @@ public class DonationAlertsApi extends JavaPlugin {
 
     public @NotNull Component getMessage(@NotNull String key) {
         return messages.getOrDefault(key, Component.text("Missing message " + key).color(TextColor.fromCSSHexString("#ff5555")));
+    }
+
+    public void sendMessage(@NotNull CommandSender sender, Component message) {
+        if (sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(PlainTextComponentSerializer.plainText().serialize(message));
+        } else {
+            sender.sendMessage(message);
+        }
     }
 
     public boolean allowBuiltInCommands() {
