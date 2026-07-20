@@ -85,6 +85,10 @@ public class DonationAlertsApi extends JavaPlugin {
                 commands.registrar().register(DonationAlertsApiCMND.command(this), List.of("donationalertsapi", "donationapi", "donationalerts"))
         );
 
+//        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
+//                commands.registrar().register(DonationAlertsApiCMND.command(this), List.of("donationalertsapi", "donationapi", "donationalerts"))
+//        );
+
         tryConnect();
     }
 
