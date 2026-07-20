@@ -5,15 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class DonationListener implements Listener {
-
-    public static final String SENDER_PLACEHOLDER = Pattern.quote("$sender$");
-    public static final String MESSAGE_PLACEHOLDER = Pattern.quote("$message$");
-    public static final String CURRENCY_PLACEHOLDER = Pattern.quote("$currency$");
-    public static final String AMOUNT_PLACEHOLDER = Pattern.quote("$amount$");
-    public static final String RECIPIENT_AMOUNT_PLACEHOLDER = Pattern.quote("$recipient_amount$");
 
     private final DonationAlertsApi plugin;
     private final List<String> commands;
@@ -29,11 +22,11 @@ public class DonationListener implements Listener {
         if (plugin.allowBuiltInCommands()) {
             for (String command : commands) {
                 command = command
-                        .replaceAll(SENDER_PLACEHOLDER, e.getUsername())
-                        .replaceAll(MESSAGE_PLACEHOLDER, e.getMessage())
-                        .replaceAll(AMOUNT_PLACEHOLDER, String.valueOf(e.getAmount()))
-                        .replaceAll(CURRENCY_PLACEHOLDER, e.getCurrency())
-                        .replaceAll(RECIPIENT_AMOUNT_PLACEHOLDER, String.valueOf(e.getAmountInUserCurrency()));
+                        .replace("$sender$", e.getUsername().replace("\"", "\\\""))
+                        .replace("$message$", e.getMessage().replace("\"", "\\\""))
+                        .replace("$amount$", String.valueOf(e.getAmount()))
+                        .replace("$currency$", e.getCurrency())
+                        .replace("$recipient_amount$", String.valueOf(e.getAmountInUserCurrency()));
                 command = SafePAPI.setPlaceholders(command);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }
