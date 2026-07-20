@@ -3,7 +3,7 @@ prefix: DAAPI
 version: '${version}'
 
 main: proteruga.DonationAlertsApi.DonationAlertsApi
-api-version: '1.21.1'
+api-version: '1.18'
 load: STARTUP
 
 commands:
