@@ -159,28 +159,28 @@ public class DonationAlertsApi extends JavaPlugin {
             }
         }
 
-        accessToken = getConfig().getString("access-token", "");
-        clientId = getConfig().getString("client-id", "");
-        clientSecret = getConfig().getString("client-secret", "");
-        redirectUri = getConfig().getString("redirect-uri", "http://localhost:8080/callback");
+        accessToken = currentConfig.getString("access-token", "");
+        clientId = currentConfig.getString("client-id", "");
+        clientSecret = currentConfig.getString("client-secret", "");
+        redirectUri = currentConfig.getString("redirect-uri", "http://localhost:8080/callback");
 
-        reconnectDelay = getConfig().getInt("reconnect-delay", 10);
-        logDonations = getConfig().getBoolean("log-donations", true);
-        logInfo = getConfig().getBoolean("log-info", true);
-        logWebSocket = getConfig().getBoolean("log-web-socket", false);
-        builtInCommands = getConfig().getBoolean("enable-builtin-commands", false);
+        reconnectDelay = currentConfig.getInt("reconnect-delay", 10);
+        logDonations = currentConfig.getBoolean("log-donations", true);
+        logInfo = currentConfig.getBoolean("log-info", true);
+        logWebSocket = currentConfig.getBoolean("log-web-socket", false);
+        builtInCommands = currentConfig.getBoolean("enable-builtin-commands", false);
 
         if (builtInCommands) {
             commands.clear();
-            commands.addAll(getConfig().getStringList("commands"));
+            commands.addAll(currentConfig.getStringList("commands"));
         }
 
 
-        ConfigurationSection messagesSection = getConfig().getConfigurationSection("messages");
+        ConfigurationSection messagesSection = currentConfig.getConfigurationSection("messages");
 
         if (messagesSection != null) {
             messages.clear();
-            String prefix = getConfig().getString("messages.prefix", "Missing messages.prefix ");
+            String prefix = currentConfig.getString("messages.prefix", "Missing messages.prefix ");
             for (String key : messagesSection.getKeys(true)) {
                 if (key.equals("prefix")) continue;
                 messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key)));
@@ -188,7 +188,7 @@ public class DonationAlertsApi extends JavaPlugin {
         }
         else getLogger().severe(CONSOLE_PREFIX + "Missing messages section in config.yml!");
 
-        debug = getConfig().getBoolean("debug", false);
+        debug = currentConfig.getBoolean("debug", false);
         return true;
     }
 
