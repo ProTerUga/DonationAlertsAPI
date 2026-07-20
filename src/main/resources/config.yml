@@ -81,6 +81,10 @@ commands:
 
 messages:
   prefix: "<dark_gray>[<gradient:#F2A544:#FFDC80>DonationAlertsAPI</gradient>]</dark_gray> "
+  command:
+    usage: "Use /donationalertsapi <...>"
+    unknown: "<red>Unknown command."
+    dont-have-permission: "<red>You don't have permission to do it."
   reload:
     successfully-reloaded: "<green>Configuration reloaded!"
     successfully-connected: "<green>Successfully connected to DonationAlerts!"
@@ -92,6 +96,7 @@ messages:
     connected: "<gray>Connection status: <green>Connected"
     not-connected: "<gray>Connection status: <red>Not connected"
   test:
+    usage: "Use /donationalertsapi test <SenderName> <Amount> <Currency> \"<Message>\""
     connection-warning: "<yellow>Warning! DonationAlerts is NOT connected!"
     donation: "<green>The donation was successfully triggered."
   auth:
@@ -100,6 +105,7 @@ messages:
           from the search bar (...?code=<code>): <underlined><white><click:open_url:''$url$''><hover:show_text:''Click''>$url$<reset><br>
           <aqua>After that, run at console /daapi token <code>'
   token:
+    usage: "Use /donationalertsapi token <YourClientCode>"
     empty-code: "<red>Code cannot be empty."
     successfully-obtained: "<green>Access token successfully obtained and saved! The plugin will reconnect."
     failed: "<red>Failed to exchange code. Check console for details."
