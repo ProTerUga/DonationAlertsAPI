@@ -173,10 +173,10 @@ public class DonationAlertsApi extends JavaPlugin {
 
         if (messagesSection != null) {
             messages.clear();
-            String prefix = getConfig().getString("messages.prefix");
+            String prefix = getConfig().getString("messages.prefix", "Missing message.prefix ");
             for (String key : messagesSection.getKeys(true)) {
                 if (key.equals("prefix")) continue;
-                messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key)));
+                messages.put(key, MiniMessage.miniMessage().deserialize(prefix + messagesSection.getString(key, "Missing " + key)));
             }
         }
         else getLogger().severe(CONSOLE_PREFIX + "Missing messages section in config.yml!");
