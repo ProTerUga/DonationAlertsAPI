@@ -57,7 +57,7 @@ enable-builtin-commands: true
 #
 # In addition, the plugin has several built-in functions
 # that will allow you to get more opportunities.
-# Usage syntax: "[command_name] params..."
+# Usage syntax: "[function_name] params..."
 #
 # List of built-in functions:
 # [sound] - play sound to player(s)
@@ -69,7 +69,7 @@ enable-builtin-commands: true
 # [effect] - apply potion effect to player(s)
 #
 # See more information here:
-# https://github.com/ProTerUga/DonationAlertsAPI/wiki/Configuration
+# https://github.com/ProTerUga/DonationAlertsAPI/wiki/Built%E2%80%90in-commands-and-functions
 commands:
   - "[sound] minecraft:entity.player.levelup music 1.0 0.5 $sender$"
   - "[message] @a Test <gradient:#ffff00:#ff00ff>DONATION</gradient>!!! <#ff5555>Test \"red\" <reset>and <yellow><bold><italic>YeLlOw<reset><br>$message$"
