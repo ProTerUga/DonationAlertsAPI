@@ -1,14 +1,19 @@
 package proteruga.DonationAlertsApi;
 
+import me.clip.placeholderapi.libs.kyori.adventure.util.Ticks;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -22,7 +27,10 @@ public class DonationListener implements Listener {
     private final static String colonPattern = Pattern.quote(":");
     private final static Map<String, Consumer<String>> functions = Map.of(
             "sound", DonationListener::sound,
-            "message", DonationListener::message
+            "message", DonationListener::message,
+            "title", DonationListener::title,
+            "subtitle", DonationListener::subtitle,
+            "times", DonationListener::times
     );
 
     public DonationListener(DonationAlertsApi plugin) {
@@ -108,6 +116,7 @@ public class DonationListener implements Listener {
         audience.playSound(sound);
         DonationAlertsApi.log(Level.INFO, "The sound " + args[1] + " in the category " + args[2] + " was successfully played at volume " + args[3] + " and pitch " + args[4] + " for " + args[5]);
     }
+
     private static void message(String command) {
         String[] splitResult = command.split(spacePattern);
 
@@ -134,5 +143,106 @@ public class DonationListener implements Listener {
 
         audience.sendMessage(MiniMessage.miniMessage().deserialize(message));
         DonationAlertsApi.log(Level.INFO, "The message \"" + message + "\" has been successfully sent to " + target);
+    }
+
+    private static void title(String command) {
+        String[] splitResult = command.split(spacePattern);
+
+        if (splitResult.length < 2) {
+            DonationAlertsApi.log(Level.WARNING, "Failed to parse function: " + command);
+            return;
+        }
+
+        String target = splitResult[1];
+        Audience audience = Audience.audience();
+        if (target.equals("@a")) {
+            audience = Audience.audience(Bukkit.getOnlinePlayers());
+        }
+        else {
+            Player player = Bukkit.getPlayer(target);
+            if (player != null) audience = Audience.audience(player);
+        }
+
+        String message;
+        if (splitResult.length == 2) {
+            message = "";
+        }
+        else {
+            StringBuilder stringBuilder = new StringBuilder(splitResult[2]);
+            for (int i = 3; i < splitResult.length; i++) {
+                stringBuilder.append(" ").append(splitResult[i]);
+            }
+            message = stringBuilder.toString();
+        }
+
+        audience.sendTitlePart(TitlePart.TITLE, MiniMessage.miniMessage().deserialize(message));
+        DonationAlertsApi.log(Level.INFO, "The title \"" + message + "\" has been successfully shown to " + target);
+    }
+
+    private static void subtitle(String command) {
+        String[] splitResult = command.split(spacePattern);
+
+        if (splitResult.length < 3) {
+            DonationAlertsApi.log(Level.WARNING, "Failed to parse function: " + command);
+            return;
+        }
+
+        String target = splitResult[1];
+        Audience audience = Audience.audience();
+        if (target.equals("@a")) {
+            audience = Audience.audience(Bukkit.getOnlinePlayers());
+        }
+        else {
+            Player player = Bukkit.getPlayer(target);
+            if (player != null) audience = Audience.audience(player);
+        }
+
+        StringBuilder stringBuilder = new StringBuilder(splitResult[2]);
+        for (int i = 3; i < splitResult.length; i++) {
+            stringBuilder.append(" ").append(splitResult[i]);
+        }
+        String message = stringBuilder.toString();
+
+        audience.sendTitlePart(TitlePart.SUBTITLE, MiniMessage.miniMessage().deserialize(message));
+        DonationAlertsApi.log(Level.INFO, "The subtitle \"" + message + "\" has been successfully shown to " + target);
+    }
+
+    private static void times(String command) {
+        String[] splitResult = command.split(spacePattern);
+
+        if (splitResult.length < 5) {
+            DonationAlertsApi.log(Level.WARNING, "Failed to parse function: " + command);
+            return;
+        }
+
+        String target = splitResult[1];
+        Audience audience = Audience.audience();
+        if (target.equals("@a")) {
+            audience = Audience.audience(Bukkit.getOnlinePlayers());
+        }
+        else {
+            Player player = Bukkit.getPlayer(target);
+            if (player != null) audience = Audience.audience(player);
+        }
+
+        long fadeIn = 10;
+        try { fadeIn = Long.parseLong(splitResult[2]); }
+        catch (NumberFormatException e) { DonationAlertsApi.log(Level.WARNING, "Failed to parse fadeIn time: " + e.getMessage()); }
+
+        long stay = 100;
+        try { stay = Long.parseLong(splitResult[3]); }
+        catch (NumberFormatException e) { DonationAlertsApi.log(Level.WARNING, "Failed to parse stay time: " + e.getMessage()); }
+
+        long fadeOut = 10;
+        try { fadeOut = Long.parseLong(splitResult[4]); }
+        catch (NumberFormatException e) { DonationAlertsApi.log(Level.WARNING, "Failed to parse fadeOut time: " + e.getMessage()); }
+
+
+        audience.sendTitlePart(TitlePart.TIMES, Title.Times.times(
+                Duration.of(fadeIn * Ticks.SINGLE_TICK_DURATION_MS, ChronoUnit.MILLIS),
+                Duration.of(stay * Ticks.SINGLE_TICK_DURATION_MS, ChronoUnit.MILLIS),
+                Duration.of(fadeOut * Ticks.SINGLE_TICK_DURATION_MS, ChronoUnit.MILLIS)
+        ));
+        DonationAlertsApi.log(Level.INFO, "The times of title has been successfully applied to " + target);
     }
 }
