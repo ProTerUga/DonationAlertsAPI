@@ -4,9 +4,9 @@
   <groupId>com.github.proteruga</groupId>
   <artifactId>donation-alerts-api</artifactId>
   <name>donation-alerts-api</name>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <build>
-    <defaultGoal>clean package</defaultGoal>
+    <defaultGoal>clean compile package</defaultGoal>
     <resources>
       <resource>
         <filtering>true</filtering>
