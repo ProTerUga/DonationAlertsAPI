@@ -38,6 +38,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 public class DonationAlertsApi extends JavaPlugin {
@@ -45,6 +46,7 @@ public class DonationAlertsApi extends JavaPlugin {
     public final static String CONSOLE_PREFIX = "[DonationAlertsAPI] ";
     private final static String PATTERN_NEWLINE = Pattern.quote("\n");
 
+    private static DonationAlertsApi plugin;
     private static boolean placeholdersEnabled = false;
 
     private final List<String> commands = new ArrayList<>();
@@ -72,6 +74,8 @@ public class DonationAlertsApi extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        plugin = this;
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             placeholdersEnabled = true;
             getLogger().info(CONSOLE_PREFIX + "PlaceholderAPI plugin detected, placeholder support available.");
@@ -537,5 +541,9 @@ public class DonationAlertsApi extends JavaPlugin {
 
     public static boolean isPlaceholdersEnabled() {
         return placeholdersEnabled;
+    }
+
+    public static void log(Level level, String logMessage) {
+        plugin.getLogger().log(level, CONSOLE_PREFIX + logMessage);
     }
 }
