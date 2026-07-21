@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -17,7 +16,6 @@ import java.util.regex.Pattern;
 public class DonationListener implements Listener {
 
     private final DonationAlertsApi plugin;
-    private final List<String> commands;
 
     private final static String spacePattern = Pattern.quote(" ");
     private final static String colonPattern = Pattern.quote(":");
@@ -25,9 +23,8 @@ public class DonationListener implements Listener {
             "sound", DonationListener::sound
     );
 
-    public DonationListener(DonationAlertsApi plugin, List<String> commands) {
+    public DonationListener(DonationAlertsApi plugin) {
         this.plugin = plugin;
-        this.commands = commands;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -35,7 +32,7 @@ public class DonationListener implements Listener {
         if (plugin.isDebug()) plugin.getLogger().info(DonationAlertsApi.CONSOLE_PREFIX + e.toString());
         if (!plugin.allowBuiltInCommands()) return;
 
-        for (String command : commands) {
+        for (String command : plugin.getCommands()) {
             command = command
                     .replace("$sender$", e.getUsername().replace("\"", "\\\""))
                     .replace("$message$", e.getMessage().replace("\"", "\\\""))

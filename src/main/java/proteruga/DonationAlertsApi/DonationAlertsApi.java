@@ -89,7 +89,7 @@ public class DonationAlertsApi extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
-        Bukkit.getPluginManager().registerEvents(new DonationListener(this, commands), this);
+        Bukkit.getPluginManager().registerEvents(new DonationListener(this), this);
 
         DonationCommand donationCommand = new DonationCommand(this);
         PluginCommand pluginCommand = getCommand("donationalertsapi");
@@ -533,6 +533,10 @@ public class DonationAlertsApi extends JavaPlugin {
 
     public boolean allowBuiltInCommands() {
         return builtInCommands;
+    }
+
+    public List<String> getCommands() {
+        return commands;
     }
 
     public boolean isDebug() {
