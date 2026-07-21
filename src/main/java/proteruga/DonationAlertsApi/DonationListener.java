@@ -30,7 +30,8 @@ public class DonationListener implements Listener {
             "message", DonationListener::message,
             "title", DonationListener::title,
             "subtitle", DonationListener::subtitle,
-            "times", DonationListener::times
+            "times", DonationListener::times,
+            "actionbar", DonationListener::actionbar
     );
 
     public DonationListener(DonationAlertsApi plugin) {
@@ -244,5 +245,33 @@ public class DonationListener implements Listener {
                 Duration.of(fadeOut * Ticks.SINGLE_TICK_DURATION_MS, ChronoUnit.MILLIS)
         ));
         DonationAlertsApi.log(Level.INFO, "The times of title has been successfully applied to " + target);
+    }
+
+    private static void actionbar(String command) {
+        String[] splitResult = command.split(spacePattern);
+
+        if (splitResult.length < 3) {
+            DonationAlertsApi.log(Level.WARNING, "Failed to parse function: " + command);
+            return;
+        }
+
+        String target = splitResult[1];
+        Audience audience = Audience.audience();
+        if (target.equals("@a")) {
+            audience = Audience.audience(Bukkit.getOnlinePlayers());
+        }
+        else {
+            Player player = Bukkit.getPlayer(target);
+            if (player != null) audience = Audience.audience(player);
+        }
+
+        StringBuilder stringBuilder = new StringBuilder(splitResult[2]);
+        for (int i = 3; i < splitResult.length; i++) {
+            stringBuilder.append(" ").append(splitResult[i]);
+        }
+        String message = stringBuilder.toString();
+
+        audience.sendActionBar(MiniMessage.miniMessage().deserialize(message));
+        DonationAlertsApi.log(Level.INFO, "The actionbar \"" + message + "\" has been successfully sent to " + target);
     }
 }
