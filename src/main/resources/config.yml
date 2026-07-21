@@ -111,7 +111,7 @@ messages:
     connection-warning: "<yellow>Warning! DonationAlerts is NOT connected!"
     donation: "<green>The donation was successfully triggered."
   auth:
-    missing-client-id: "<red> Client ID is not set in config.yml. Please set it and reload."
+    missing-client-id: "<red>Client ID is not set in config.yml. Please set it and reload."
     url-message: '<aqua>Open this URL in your browser and copy an authorization code
           from the search bar (...?code=<code>): <underlined><white><click:open_url:''$url$''><hover:show_text:''Click''>$url$<reset><br>
           <aqua>After that, run at console /daapi token <code>'
