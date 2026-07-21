@@ -43,13 +43,18 @@ public class DonationListener implements Listener {
         if (plugin.isDebug()) plugin.getLogger().info(DonationAlertsApi.CONSOLE_PREFIX + e.toString());
         if (!plugin.allowBuiltInCommands()) return;
 
+        boolean function = false;
         for (String command : plugin.getCommands()) {
             for (Map.Entry<String, Consumer<String>> entry : functions.entrySet()) {
                 if (!command.startsWith("[" + entry.getKey() + "]")) continue;
                 entry.getValue().accept(setPlaceholders(command, e, false));
+                function = true;
                 break;
             }
-
+            if (function) {
+                function = false;
+                continue;
+            }
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), setPlaceholders(command, e, true));
         }
     }
