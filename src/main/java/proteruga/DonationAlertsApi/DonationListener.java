@@ -8,12 +8,17 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -31,7 +36,8 @@ public class DonationListener implements Listener {
             "title", DonationListener::title,
             "subtitle", DonationListener::subtitle,
             "times", DonationListener::times,
-            "actionbar", DonationListener::actionbar
+            "actionbar", DonationListener::actionbar,
+            "effect", DonationListener::effect
     );
 
     public DonationListener(DonationAlertsApi plugin) {
@@ -278,5 +284,68 @@ public class DonationListener implements Listener {
 
         audience.sendActionBar(MiniMessage.miniMessage().deserialize(message));
         DonationAlertsApi.log(Level.INFO, "The actionbar \"" + message + "\" has been successfully sent to " + target);
+    }
+
+    // [effect] @a minecraft:fire_resistance 10 0 true true true
+    private static void effect(String command) {
+        String[] splitResult = command.split(spacePattern);
+
+        if (splitResult.length < 4) {
+            DonationAlertsApi.log(Level.WARNING, "Failed to parse function: " + command);
+            return;
+        }
+
+        String[] args = { null, null, null, null, "0", "false", "true", "true" };
+        System.arraycopy(splitResult, 0, args, 0, Math.min(splitResult.length, args.length));
+
+        String target = args[1];
+        List<Player> players = new ArrayList<>();
+        if (target.equals("@a")) {
+            players.addAll(Bukkit.getOnlinePlayers());
+        }
+        else {
+            Player player = Bukkit.getPlayer(target);
+            if (player != null) players.add(player);
+        }
+
+        PotionEffectType potionEffectType = PotionEffectType.getByKey(NamespacedKey.fromString(args[2]));
+        if (potionEffectType == null) {
+            DonationAlertsApi.log(Level.WARNING, "Failed to parse effect: " + args[2]);
+            return;
+        }
+
+        int time = 100;
+        try { time = Math.max(0, Integer.parseInt(args[3])); }
+        catch (NumberFormatException e) { DonationAlertsApi.log(Level.WARNING, "Failed to parse time effect: " + e.getMessage()); }
+
+        int level = 10;
+        try { level = Math.max(0, Math.min(255, Integer.parseInt(args[4]))); }
+        catch (NumberFormatException e) { DonationAlertsApi.log(Level.WARNING, "Failed to parse level effect: " + e.getMessage()); }
+
+        boolean ambient = false;
+        try { ambient = Boolean.parseBoolean(args[5]); }
+        catch (NumberFormatException e) { DonationAlertsApi.log(Level.WARNING, "Failed to parse ambient flag effect: " + e.getMessage()); }
+
+        boolean particles = true;
+        try { particles = Boolean.parseBoolean(args[6]); }
+        catch (NumberFormatException e) { DonationAlertsApi.log(Level.WARNING, "Failed to parse particles flag effect: " + e.getMessage()); }
+
+        boolean icon = true;
+        try { icon = Boolean.parseBoolean(args[7]); }
+        catch (NumberFormatException e) { DonationAlertsApi.log(Level.WARNING, "Failed to parse icon flag effect: " + e.getMessage()); }
+
+        PotionEffect potionEffect = new PotionEffect(
+                potionEffectType,
+                time,
+                level,
+                ambient,
+                particles,
+                icon
+        );
+
+        for (Player player : players) {
+            player.addPotionEffect(potionEffect);
+        }
+        DonationAlertsApi.log(Level.INFO, "The effect \"" + args[2] + "\" level " + (level + 1) + " for " + time + " ticks has been successfully applied to " + target);
     }
 }
