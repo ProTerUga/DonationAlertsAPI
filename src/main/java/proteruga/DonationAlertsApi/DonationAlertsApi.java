@@ -165,6 +165,7 @@ public class DonationAlertsApi extends JavaPlugin {
                 this.getLogger().severe(CONSOLE_PREFIX + "Could not save config: " + e.getMessage());
             }
         }
+        debug = currentConfig.getBoolean("debug", false);
 
         accessToken = currentConfig.getString("access-token", "");
         clientId = currentConfig.getString("client-id", "");
@@ -180,6 +181,7 @@ public class DonationAlertsApi extends JavaPlugin {
         if (builtInCommands) {
             commands.clear();
             commands.addAll(currentConfig.getStringList("commands"));
+            if (debug) log(Level.INFO, commands.size() + " commands were loaded.");
         }
 
 
@@ -194,8 +196,6 @@ public class DonationAlertsApi extends JavaPlugin {
             }
         }
         else getLogger().severe(CONSOLE_PREFIX + "Missing messages section in config.yml!");
-
-        debug = currentConfig.getBoolean("debug", false);
         return true;
     }
 
