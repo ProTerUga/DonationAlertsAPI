@@ -3,6 +3,7 @@ package proteruga.DonationAlertsApi;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,8 @@ public class DonationListener implements Listener {
     private final static String spacePattern = Pattern.quote(" ");
     private final static String colonPattern = Pattern.quote(":");
     private final static Map<String, Consumer<String>> functions = Map.of(
-            "sound", DonationListener::sound
+            "sound", DonationListener::sound,
+            "message", DonationListener::message
     );
 
     public DonationListener(DonationAlertsApi plugin) {
@@ -105,5 +107,32 @@ public class DonationListener implements Listener {
         Sound sound = Sound.sound(Key.key(soundNamespace, soundValue), source, volume, pitch);
         audience.playSound(sound);
         DonationAlertsApi.log(Level.INFO, "The sound " + args[1] + " in the category " + args[2] + " was successfully played at volume " + args[3] + " and pitch " + args[4] + " for " + args[5]);
+    }
+    private static void message(String command) {
+        String[] splitResult = command.split(spacePattern);
+
+        if (splitResult.length < 3) {
+            DonationAlertsApi.log(Level.WARNING, "Failed to parse function: " + command);
+            return;
+        }
+
+        String target = splitResult[1];
+        Audience audience = Audience.audience();
+        if (target.equals("@a")) {
+            audience = Audience.audience(Bukkit.getOnlinePlayers());
+        }
+        else {
+            Player player = Bukkit.getPlayer(target);
+            if (player != null) audience = Audience.audience(player);
+        }
+
+        StringBuilder stringBuilder = new StringBuilder(splitResult[2]);
+        for (int i = 3; i < splitResult.length; i++) {
+            stringBuilder.append(" ").append(splitResult[i]);
+        }
+        String message = stringBuilder.toString();
+
+        audience.sendMessage(MiniMessage.miniMessage().deserialize(message));
+        DonationAlertsApi.log(Level.INFO, "The message \"" + message + "\" has been successfully sent to " + target);
     }
 }
