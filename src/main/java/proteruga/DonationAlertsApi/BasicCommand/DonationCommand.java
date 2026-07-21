@@ -20,6 +20,7 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
     private final DonationAlertsApi plugin;
 
     private static final List<String> SUB_COMMANDS = List.of("reload", "status", "auth", "token", "test");
+    private static final List<String> CURRENCIES = List.of("BRL", "BYN", "EUR", "KZT", "PLN", "RUB", "TRY", "UAH", "USD", "UZS");
 
     public DonationCommand(DonationAlertsApi plugin) {
         this.plugin = plugin;
@@ -199,7 +200,7 @@ public class DonationCommand implements CommandExecutor, TabCompleter {
                 case "test": {
                     if (args.length == 2) return null;
                     if (args.length == 3 && args[2].isBlank()) return List.of("<Amount>");
-                    if (args.length == 4 && args[3].isBlank()) return List.of("USD", "EUR", "RUB", "KZT");
+                    if (args.length == 4) return filterStartingWith(CURRENCIES, args[3]);
                     if (args.length == 5 && args[4].isBlank()) return List.of("\"Donation message...\"");
                     break;
                 }
