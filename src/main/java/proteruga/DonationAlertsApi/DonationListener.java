@@ -33,22 +33,36 @@ public class DonationListener implements Listener {
         if (!plugin.allowBuiltInCommands()) return;
 
         for (String command : plugin.getCommands()) {
-            command = command
-                    .replace("$sender$", e.getUsername().replace("\"", "\\\""))
-                    .replace("$message$", e.getMessage().replace("\"", "\\\""))
-                    .replace("$amount$", String.valueOf(e.getAmount()))
-                    .replace("$currency$", e.getCurrency())
-                    .replace("$recipient_amount$", String.valueOf(e.getAmountInUserCurrency()));
-            command = SafePAPI.setPlaceholders(command);
-
             for (Map.Entry<String, Consumer<String>> entry : functions.entrySet()) {
                 if (!command.startsWith("[" + entry.getKey() + "]")) continue;
-                entry.getValue().accept(command);
-                return;
+                entry.getValue().accept(setPlaceholders(command, e, false));
+                break;
             }
 
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), setPlaceholders(command, e, true));
         }
+    }
+
+    private String setPlaceholders(String command, DonationEvent event, boolean quotesEscape) {
+        String result;
+        if (quotesEscape) {
+            result = command
+                    .replace("$sender$", event.getUsername().replace("\"", "\\\""))
+                    .replace("$message$", event.getMessage().replace("\"", "\\\""))
+                    .replace("$amount$", String.valueOf(event.getAmount()))
+                    .replace("$currency$", event.getCurrency())
+                    .replace("$recipient_amount$", String.valueOf(event.getAmountInUserCurrency()));
+        }
+        else {
+            result = command
+                    .replace("$sender$", event.getUsername())
+                    .replace("$message$", event.getMessage())
+                    .replace("$amount$", String.valueOf(event.getAmount()))
+                    .replace("$currency$", event.getCurrency())
+                    .replace("$recipient_amount$", String.valueOf(event.getAmountInUserCurrency()));
+        }
+
+        return SafePAPI.setPlaceholders(result);
     }
 
     private static void sound(String command) {
